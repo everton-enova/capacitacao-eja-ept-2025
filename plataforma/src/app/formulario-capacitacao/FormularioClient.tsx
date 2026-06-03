@@ -63,7 +63,7 @@ export default function FormularioClient() {
     funcao: '', nte: '', municipio: '',
     tipoDeslocamento: '', quilometragem: '', valorTransporte: '',
     hospedagem: '', banco: '', tipoConta: '',
-    agencia: '', conta: '', tipoChavePix: '', chavePix: '',
+    agencia: '', conta: '',
   })
 
   const [municipios, setMunicipios] = useState<string[]>([])
@@ -156,8 +156,6 @@ export default function FormularioClient() {
     if (!form.tipoConta) e.tipoConta = 'Selecione o tipo de conta.'
     if (!form.agencia.trim()) e.agencia = 'Informe a agência.'
     if (!form.conta.trim()) e.conta = 'Informe o número da conta.'
-    if (!form.tipoChavePix) e.tipoChavePix = 'Selecione o tipo de chave.'
-    if (!form.chavePix.trim()) e.chavePix = 'Informe a chave PIX.'
     return e
   }
 
