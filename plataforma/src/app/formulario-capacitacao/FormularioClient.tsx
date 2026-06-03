@@ -241,7 +241,7 @@ export default function FormularioClient() {
           <Image src="/brasao_estado.png" alt="Estado da Bahia" width={32} height={32} />
           <div>
             <p className="text-xs text-gray-500">SABE 2025 — EJA e EPT</p>
-            <p className="text-sm font-semibold text-gray-900">Formulário de Inscrição</p>
+            <p className="text-sm font-semibold text-gray-900">Formulário para Capacitação</p>
           </div>
         </header>
 
