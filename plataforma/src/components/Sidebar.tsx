@@ -31,7 +31,7 @@ export default function Sidebar({ session }: Props) {
   const links = [
     { href: '/painel', label: 'Dashboard', icon: iconDashboard, roles: ['master', 'subcoordenador', 'territorial'] },
     { href: '/painel/capacitacao', label: 'Capacitação', icon: iconCapacitacao, roles: ['master', 'subcoordenador', 'territorial'] },
-    { href: '/painel/colaboradores', label: 'Colaboradores', icon: iconColaboradores, roles: ['master'] },
+    { href: '/painel/colaboradores', label: 'Colaboradores', icon: iconColaboradores, roles: ['master', 'subcoordenador'] },
   ].filter(l => l.roles.includes(session.role))
 
   function NavLinks({ onClick }: { onClick?: () => void }) {
