@@ -188,24 +188,57 @@ export default function FormularioClient() {
   if (sucesso) {
     return (
       <main className="min-h-screen bg-[#e8e8e8] flex items-center justify-center px-4">
-        <div className="bg-white rounded-2xl shadow-sm w-full max-w-md p-10 text-center">
-          <div className="text-5xl mb-4">✅</div>
-          <h2 className="text-xl font-bold text-gray-900 mb-2">Inscrição enviada!</h2>
-          <p className="text-gray-500 text-sm">Seus dados foram registrados com sucesso. Agradecemos a participação.</p>
+        <div className="bg-white rounded-2xl shadow-sm w-full max-w-md p-10 text-center space-y-4">
+          <div className="text-5xl">✅</div>
+          <h2 className="text-xl font-bold text-gray-900">Cadastro realizado!</h2>
+          <p className="text-gray-500 text-sm leading-relaxed">
+            Seus dados foram registrados com sucesso.<br/>
+            Agora você pode acessar o painel com o seu CPF.
+          </p>
+          <a
+            href="/login"
+            className="inline-block w-full bg-gray-900 text-white rounded-xl py-3 font-semibold text-sm hover:bg-gray-700 transition mt-2"
+          >
+            Acessar o painel
+          </a>
         </div>
       </main>
     )
   }
 
   return (
-    <main className="min-h-screen bg-[#e8e8e8]">
-      <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-3">
-        <Image src="/brasao_estado.png" alt="Estado da Bahia" width={36} height={36} />
-        <div>
-          <p className="text-xs text-gray-500">SABE 2025 — Avaliação de Entrada EJA e EPT</p>
-          <p className="text-sm font-semibold text-gray-900">Formulário de Inscrição — Equipe de Campo</p>
+    <main className="min-h-screen flex">
+      {/* Painel esquerdo */}
+      <div className="hidden lg:flex lg:w-80 xl:w-96 flex-shrink-0 relative flex-col items-center justify-center p-10"
+        style={{ backgroundImage: "url('/background.webp')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <div className="absolute inset-0" style={{ background: 'rgba(28,28,28,0.92)' }} />
+        <div className="relative z-10 text-white text-left w-full">
+          <Image src="/brasao_estado.png" alt="Estado da Bahia" width={56} height={56} className="mb-6" />
+          <p className="text-xs font-normal text-white/70 mb-1">Capacitação para Equipe de Campo</p>
+          <h1 className="text-2xl font-bold leading-tight mb-1">Avaliação de Entrada</h1>
+          <h1 className="text-2xl font-bold leading-tight mb-6">EJA e EPT</h1>
+          <div className="border-t border-white/20 pt-6 space-y-4">
+            <div>
+              <p className="text-xs uppercase tracking-widest text-white/50 mb-1">Data</p>
+              <p className="text-sm font-light">04 de Julho de 2026</p>
+            </div>
+          </div>
+          <p className="mt-8 text-xs text-white/50 leading-relaxed">
+            Preencha o formulário com atenção redobrada a todos os campos. Ao enviar, seu cadastro é criado automaticamente e você poderá acessar o painel com seu CPF.
+          </p>
         </div>
-      </header>
+      </div>
+
+      {/* Painel direito */}
+      <div className="flex-1 bg-[#e8e8e8] overflow-y-auto">
+        {/* Header mobile */}
+        <header className="lg:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center gap-3">
+          <Image src="/brasao_estado.png" alt="Estado da Bahia" width={32} height={32} />
+          <div>
+            <p className="text-xs text-gray-500">SABE 2025 — EJA e EPT</p>
+            <p className="text-sm font-semibold text-gray-900">Formulário de Inscrição</p>
+          </div>
+        </header>
 
       <div className="max-w-2xl mx-auto px-4 py-8">
         <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-4 text-xs text-amber-800 leading-relaxed mb-6">
@@ -352,6 +385,7 @@ export default function FormularioClient() {
             {loading ? 'Enviando...' : 'Enviar Inscrição'}
           </button>
         </form>
+      </div>
       </div>
     </main>
   )
