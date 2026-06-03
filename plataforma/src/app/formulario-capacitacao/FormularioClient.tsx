@@ -72,6 +72,7 @@ export default function FormularioClient() {
   const [popup, setPopup] = useState(false)
   const [contador, setContador] = useState(5)
   const [erroGeral, setErroGeral] = useState('')
+  const [ciencias, setCiencias] = useState([false, false, false, false, false])
 
   const isTerritorial = form.funcao === 'Coordenador Territorial'
   const isNte26 = form.nte === NTE26
@@ -156,6 +157,7 @@ export default function FormularioClient() {
     if (!form.tipoConta) e.tipoConta = 'Selecione o tipo de conta.'
     if (!form.agencia.trim()) e.agencia = 'Informe a agência.'
     if (!form.conta.trim()) e.conta = 'Informe o número da conta.'
+    if (!ciencias.every(Boolean)) e.ciencias = 'Confirme todos os itens de ciência e responsabilidade.'
     return e
   }
 
@@ -188,6 +190,7 @@ export default function FormularioClient() {
         banco: '', tipoConta: '', agencia: '', conta: '' })
       setMunicipios([])
       setErros({})
+      setCiencias([false, false, false, false, false])
       setContador(5)
       setPopup(true)
       const tick = setInterval(() => {
@@ -368,6 +371,41 @@ export default function FormularioClient() {
                 <p className="text-xs text-gray-400 mt-1">Informe com o dígito verificador.</p>
               </Field>
             </div>
+          </div>
+
+          {/* CIÊNCIA E RESPONSABILIDADE */}
+          <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
+            <p className={sectionCls}>5. Ciência e Responsabilidade</p>
+            <p className="text-xs text-gray-500 leading-relaxed">Leia e confirme cada item abaixo antes de enviar.</p>
+
+            {[
+              'Declaro estar ciente de que, para os devidos fins, o deslocamento não pode ser realizado por meio de carro oficial, em conformidade com as normas e diretrizes administrativas vigentes que regulamentam a utilização de veículos institucionais.',
+              'Declaro estar ciente de que o acesso à capacitação é restrito exclusivamente aos membros da equipe de aplicação, não sendo permitida a participação, permanência ou acompanhamento de terceiros.',
+              'Estou ciente de que a prestação de contas deverá ser realizada em até 48 horas após a capacitação, mediante apresentação de: nota fiscal de combustível contendo CNPJ do posto, data da emissão, nome e CPF do colaborador; e/ou comprovante de embarque rodoviário.',
+              'Declaro estar ciente de que o valor da ajuda de custo destina-se exclusivamente à cobertura das despesas com alimentação e transporte por carro de aplicativo, não havendo complementação de valores.',
+              'Declaro que as informações prestadas neste formulário são verdadeiras e de minha inteira responsabilidade, assumindo eventuais consequências decorrentes de informações incorretas ou inconsistentes.',
+            ].map((texto, i) => (
+              <label key={i} className="flex items-start gap-3 cursor-pointer group">
+                <input
+                  type="checkbox"
+                  checked={ciencias[i]}
+                  onChange={e => {
+                    const nova = [...ciencias]
+                    nova[i] = e.target.checked
+                    setCiencias(nova)
+                    setErros(er => { const n = { ...er }; delete n.ciencias; return n })
+                  }}
+                  className="mt-0.5 w-4 h-4 flex-shrink-0 accent-gray-900 cursor-pointer"
+                />
+                <span className="text-xs text-gray-700 leading-relaxed group-hover:text-gray-950 transition-colors">
+                  {texto}
+                </span>
+              </label>
+            ))}
+
+            {erros.ciencias && (
+              <p className="text-xs text-red-600 font-medium">{erros.ciencias}</p>
+            )}
           </div>
 
           {erroGeral && (
