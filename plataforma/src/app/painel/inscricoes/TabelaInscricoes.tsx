@@ -19,17 +19,30 @@ export default function TabelaInscricoes({ role, nte }: { role: Role; nte: strin
   const [loading, setLoading] = useState(true)
   const [busca, setBusca] = useState('')
 
-  useEffect(() => {
-    fetch('/api/inscricoes')
-      .then(r => r.json())
-      .then(data => { setInscricoes(data); setLoading(false) })
-  }, [])
+  async function carregar() {
+    const res = await fetch('/api/inscricoes')
+    const data = await res.json()
+    setInscricoes(data)
+    setLoading(false)
+  }
+
+  useEffect(() => { carregar() }, [])
 
   const filtradas = inscricoes.filter(i =>
     i.nome.toLowerCase().includes(busca.toLowerCase()) ||
     i.cpf.includes(busca) ||
     i.municipio?.toLowerCase().includes(busca.toLowerCase())
   )
+
+  async function excluir(id: string, nome: string) {
+    if (!confirm(`Excluir a inscrição de "${nome}"? Esta ação não pode ser desfeita.`)) return
+    await fetch('/api/inscricoes', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id }),
+    })
+    carregar()
+  }
 
   async function exportarCSV() {
     const res = await fetch('/api/inscricoes')
@@ -46,6 +59,8 @@ export default function TabelaInscricoes({ role, nte }: { role: Role; nte: strin
     const a = document.createElement('a'); a.href = url; a.download = 'inscricoes.csv'; a.click()
   }
 
+  const podeExcluir = role === 'master' || role === 'subcoordenador'
+
   return (
     <div>
       <div className="flex items-center justify-between mb-4 gap-4">
@@ -58,7 +73,7 @@ export default function TabelaInscricoes({ role, nte }: { role: Role; nte: strin
         />
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-500">{filtradas.length} inscrição(ões)</span>
-          {(role === 'master' || role === 'subcoordenador') && (
+          {podeExcluir && (
             <button onClick={exportarCSV} className="bg-white border border-gray-300 text-gray-700 text-xs px-3 py-2 rounded-lg hover:bg-gray-50 transition">
               Exportar CSV
             </button>
@@ -75,8 +90,8 @@ export default function TabelaInscricoes({ role, nte }: { role: Role; nte: strin
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gray-200 bg-gray-50">
-                {['Nome', 'CPF', 'Função', 'NTE', 'Município', 'Hospedagem', 'Deslocamento', 'Data'].map(h => (
-                  <th key={h} className="text-left text-xs font-semibold text-gray-600 uppercase tracking-wide px-4 py-3">{h}</th>
+                {['Nome', 'CPF', 'Função', 'NTE', 'Município', 'Hospedagem', 'Deslocamento', 'Data', ...(podeExcluir ? [''] : [])].map((h, i) => (
+                  <th key={i} className="text-left text-xs font-semibold text-gray-600 uppercase tracking-wide px-4 py-3">{h}</th>
                 ))}
               </tr>
             </thead>
@@ -94,7 +109,19 @@ export default function TabelaInscricoes({ role, nte }: { role: Role; nte: strin
                     </span>
                   </td>
                   <td className="px-4 py-3 text-gray-600">{i.tipoDeslocamento || '—'}</td>
-                  <td className="px-4 py-3 text-gray-500">{new Date(i.createdAt).toLocaleDateString('pt-BR')}</td>
+                  <td className="px-4 py-3 text-gray-500 whitespace-nowrap">
+                    {new Date(i.createdAt).toLocaleDateString('pt-BR')}
+                  </td>
+                  {podeExcluir && (
+                    <td className="px-4 py-3">
+                      <button
+                        onClick={() => excluir(i._id, i.nome)}
+                        className="text-xs text-red-600 hover:text-red-800 font-medium whitespace-nowrap"
+                      >
+                        Excluir
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
