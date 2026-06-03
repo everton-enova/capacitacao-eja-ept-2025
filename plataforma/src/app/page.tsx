@@ -4,6 +4,5 @@ import { getSession } from '@/lib/auth'
 export default async function Home() {
   const session = await getSession()
   if (!session) redirect('/login')
-  if (session.role === 'master' || session.role === 'subcoordenador') redirect('/painel/inscricoes')
-  redirect('/inscricao')
+  redirect('/painel')
 }

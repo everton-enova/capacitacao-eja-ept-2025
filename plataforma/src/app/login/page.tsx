@@ -36,11 +36,7 @@ export default function LoginPage() {
       return
     }
 
-    if (data.role === 'master' || data.role === 'subcoordenador') {
-      router.push('/painel/inscricoes')
-    } else {
-      router.push('/painel/inscricoes')
-    }
+    router.push('/painel')
   }
 
   return (
