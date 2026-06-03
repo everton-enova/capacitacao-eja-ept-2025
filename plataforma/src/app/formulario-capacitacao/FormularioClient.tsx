@@ -70,6 +70,7 @@ export default function FormularioClient() {
   const [erros, setErros] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(false)
   const [popup, setPopup] = useState(false)
+  const [contador, setContador] = useState(5)
   const [erroGeral, setErroGeral] = useState('')
 
   const isTerritorial = form.funcao === 'Coordenador Territorial'
@@ -182,12 +183,19 @@ export default function FormularioClient() {
     })
     setLoading(false)
     if (res.ok) {
-      setPopup(true)
       setForm({ nome: '', cpf: '', contato: '', email: '', funcao: '', nte: '', municipio: '',
         tipoDeslocamento: '', quilometragem: '', valorTransporte: '', hospedagem: '',
         banco: '', tipoConta: '', agencia: '', conta: '', tipoChavePix: '', chavePix: '' })
       setMunicipios([])
       setErros({})
+      setContador(5)
+      setPopup(true)
+      const tick = setInterval(() => {
+        setContador(c => {
+          if (c <= 1) { clearInterval(tick); setPopup(false); return 5 }
+          return c - 1
+        })
+      }, 1000)
     } else {
       const d = await res.json()
       setErroGeral(d.error ?? 'Erro ao enviar. Tente novamente.')
@@ -388,25 +396,15 @@ export default function FormularioClient() {
       {/* Popup de sucesso */}
       {popup && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4"
-          style={{ background: 'rgba(0,0,0,0.45)' }}
-          onClick={() => setPopup(false)}
-        >
-          <div
-            className="bg-white rounded-2xl w-full max-w-sm p-10 text-center space-y-4 shadow-2xl"
-            onClick={e => e.stopPropagation()}
-          >
+          style={{ background: 'rgba(0,0,0,0.45)' }}>
+          <div className="bg-white rounded-2xl w-full max-w-sm p-10 text-center space-y-4 shadow-2xl">
             <div className="text-5xl">✅</div>
             <h2 className="text-xl font-bold text-gray-950">Formulário enviado!</h2>
             <p className="text-gray-500 text-sm leading-relaxed">
               Seus dados foram registrados com sucesso.<br />
               Agradecemos a participação.
             </p>
-            <button
-              onClick={() => setPopup(false)}
-              className="w-full bg-gray-900 text-white rounded-xl py-3 font-semibold text-sm hover:bg-gray-700 transition"
-            >
-              Preencher novo formulário
-            </button>
+            <p className="text-3xl font-bold text-gray-950">{contador}</p>
           </div>
         </div>
       )}
