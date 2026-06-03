@@ -173,6 +173,8 @@ export default function FormularioClient() {
       quilometragem: precisaDesl ? form.quilometragem : '',
       valorTransporte: precisaDesl ? form.valorTransporte : '',
       hospedagem: isNte26 ? '' : form.hospedagem,
+      tipoChavePix: 'CPF',
+      chavePix: form.cpf,
     }
     const res = await fetch('/api/inscricao', {
       method: 'POST',
@@ -183,7 +185,7 @@ export default function FormularioClient() {
     if (res.ok) {
       setForm({ nome: '', cpf: '', contato: '', email: '', funcao: '', nte: '', municipio: '',
         tipoDeslocamento: '', quilometragem: '', valorTransporte: '', hospedagem: '',
-        banco: '', tipoConta: '', agencia: '', conta: '', tipoChavePix: '', chavePix: '' })
+        banco: '', tipoConta: '', agencia: '', conta: '' })
       setMunicipios([])
       setErros({})
       setContador(5)
@@ -306,7 +308,6 @@ export default function FormularioClient() {
                   <option value="">Selecione o tipo</option>
                   <option value="Veículo próprio">Veículo próprio</option>
                   <option value="Ônibus">Ônibus</option>
-                  <option value="Aéreo">Aéreo</option>
                   <option value="Não precisa de deslocamento">Não precisa de deslocamento</option>
                 </select>
               </Field>
@@ -346,6 +347,7 @@ export default function FormularioClient() {
             <div className="grid grid-cols-2 gap-4">
               <Field id="banco" label="Banco *" erro={erros.banco}>
                 <input value={form.banco} onChange={e => set('banco', e.target.value)} className={inputCls} placeholder="Ex: Banco do Brasil" />
+                <p className="text-xs text-gray-400 mt-1">Nome completo do banco com dígito.</p>
               </Field>
               <Field id="tipoConta" label="Tipo de conta *" erro={erros.tipoConta}>
                 <select value={form.tipoConta} onChange={e => set('tipoConta', e.target.value)} className={inputCls}>
@@ -357,25 +359,18 @@ export default function FormularioClient() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <Field id="agencia" label="Agência *" erro={erros.agencia}>
-                <input value={form.agencia} onChange={e => set('agencia', e.target.value)} className={inputCls} placeholder="0000" />
+                <input value={form.agencia} onChange={e => set('agencia', e.target.value)} className={inputCls} placeholder="0000-0" />
+                <p className="text-xs text-gray-400 mt-1">Informe com o dígito verificador.</p>
               </Field>
               <Field id="conta" label="Conta *" erro={erros.conta}>
                 <input value={form.conta} onChange={e => set('conta', e.target.value)} className={inputCls} placeholder="00000-0" />
+                <p className="text-xs text-gray-400 mt-1">Informe com o dígito verificador.</p>
               </Field>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <Field id="tipoChavePix" label="Tipo de chave PIX *" erro={erros.tipoChavePix}>
-                <select value={form.tipoChavePix} onChange={e => set('tipoChavePix', e.target.value)} className={inputCls}>
-                  <option value="">Selecione</option>
-                  <option value="CPF">CPF</option>
-                  <option value="Telefone">Telefone</option>
-                  <option value="E-mail">E-mail</option>
-                  <option value="Chave aleatória">Chave aleatória</option>
-                </select>
-              </Field>
-              <Field id="chavePix" label="Chave PIX *" erro={erros.chavePix}>
-                <input value={form.chavePix} onChange={e => set('chavePix', e.target.value)} className={inputCls} placeholder="Informe a chave" />
-              </Field>
+            <div className="bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
+              <p className="text-xs text-gray-500">
+                <span className="font-semibold text-gray-700">Chave PIX:</span> será utilizado seu CPF como chave PIX automaticamente.
+              </p>
             </div>
           </div>
 
