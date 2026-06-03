@@ -17,9 +17,7 @@ export default async function PainelColaboradores() {
         </div>
         <div className="flex items-center gap-4">
           <a href="/painel/inscricoes" className="text-xs text-gray-500 hover:text-gray-900">← Inscrições</a>
-          <form action="/api/auth/logout" method="POST">
-            <button type="submit" className="text-xs text-gray-500 hover:text-gray-900">Sair</button>
-          </form>
+          <LogoutButton />
         </div>
       </header>
       <div className="p-6">
