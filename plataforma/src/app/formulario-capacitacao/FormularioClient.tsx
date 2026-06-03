@@ -188,19 +188,13 @@ export default function FormularioClient() {
   if (sucesso) {
     return (
       <main className="min-h-screen bg-[#e8e8e8] flex items-center justify-center px-4">
-        <div className="bg-white rounded-2xl shadow-sm w-full max-w-md p-10 text-center space-y-4">
+        <div className="bg-white rounded-2xl border border-gray-200 w-full max-w-sm p-10 text-center space-y-3">
           <div className="text-5xl">✅</div>
-          <h2 className="text-xl font-bold text-gray-900">Cadastro realizado!</h2>
+          <h2 className="text-xl font-bold text-gray-950">Formulário enviado!</h2>
           <p className="text-gray-500 text-sm leading-relaxed">
-            Seus dados foram registrados com sucesso.<br/>
-            Agora você pode acessar o painel com o seu CPF.
+            Seus dados foram registrados com sucesso.<br />
+            Agradecemos a participação.
           </p>
-          <a
-            href="/login"
-            className="inline-block w-full bg-gray-900 text-white rounded-xl py-3 font-semibold text-sm hover:bg-gray-700 transition mt-2"
-          >
-            Acessar o painel
-          </a>
         </div>
       </main>
     )
