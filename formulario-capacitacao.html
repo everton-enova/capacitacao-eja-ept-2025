@@ -215,21 +215,21 @@
           <span class="field-error">Selecione uma função.</span>
         </div>
 
-        <!-- ── DADOS TERRITORIAIS (condicional) ──────── -->
-        <div class="section-title" id="title-territorial" style="display:none;">Dados Territoriais</div>
-        <div class="row" id="row-territorial" style="display:none;">
-          <div class="field" id="f-nte">
-            <label for="nte">NTE <span>*</span></label>
-            <input type="text" id="nte" placeholder="Ex: NTE 12"/>
-            <span class="field-error">Informe o NTE.</span>
-          </div>
-          <div class="field" id="f-municipio">
-            <label for="municipio">Município <span>*</span></label>
-            <select id="municipio">
-              <option value="" disabled selected>Selecione o município</option>
-            </select>
-            <span class="field-error">Selecione um município.</span>
-          </div>
+        <!-- ── DADOS TERRITORIAIS ───────────────────── -->
+        <div class="section-title">Dados Territoriais</div>
+        <div class="field" id="f-nte">
+          <label for="nte">NTE <span>*</span></label>
+          <select id="nte">
+            <option value="" disabled selected>Selecione o NTE</option>
+          </select>
+          <span class="field-error">Selecione o NTE.</span>
+        </div>
+        <div class="field" id="f-municipio">
+          <label for="municipio">Município <span>*</span></label>
+          <select id="municipio" disabled>
+            <option value="" disabled selected>Selecione o NTE primeiro</option>
+          </select>
+          <span class="field-error">Selecione um município.</span>
         </div>
 
         <!-- ── DESLOCAMENTO ───────────────────────────── -->
