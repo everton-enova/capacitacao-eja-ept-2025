@@ -1,11 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { connectDB } from '@/lib/mongodb'
 import { Inscricao } from '@/models/Inscricao'
-import { getSession } from '@/lib/auth'
 
 export async function POST(req: NextRequest) {
-  const session = await getSession()
-  if (!session) return NextResponse.json({ error: 'Não autenticado.' }, { status: 401 })
 
   const data = await req.json()
 

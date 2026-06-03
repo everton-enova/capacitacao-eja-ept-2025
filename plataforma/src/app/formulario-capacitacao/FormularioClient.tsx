@@ -1,7 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import type { SessionUser } from '@/lib/auth'
 
 const NTE_LIST = [
   { label: "NTE 01 - Irecê",                      muns: ["AMERICA DOURADA","BARRA DO MENDES","BARRO ALTO","CAFARNAUM","CANARANA","CENTRAL","GENTIO DO OURO","IBIPEBA","IBITITA","IPUPIARA","IRECE","ITAGUACU DA BAHIA","JOAO DOURADO","JUSSARA","LAPAO","MULUNGU DO MORRO","PRESIDENTE DUTRA","SAO GABRIEL","UIBAI","XIQUE-XIQUE"] },
@@ -44,33 +43,17 @@ function munAcentuado(raw: string) { return MUN_LOOKUP[raw.trim()] ?? raw }
 
 const NTE26 = 'NTE 26 - Metropolitano de Salvador'
 
-interface Props { session: SessionUser }
-
 const inputCls = 'w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-gray-700 focus:ring-2 focus:ring-gray-200 disabled:opacity-60 disabled:cursor-not-allowed'
 const labelCls = 'block text-xs font-semibold text-gray-800 uppercase tracking-wide mb-1'
 const sectionCls = 'text-xs font-bold tracking-widest text-gray-800 uppercase pb-2 border-b-2 border-gray-200'
 
-export default function FormularioClient({ session }: Props) {
-  const isTerritorial = session.funcao === 'Coordenador Territorial'
-
+export default function FormularioClient() {
   const [form, setForm] = useState({
-    nome: session.nome,
-    cpf: session.cpf,
-    contato: '',
-    email: '',
-    funcao: session.funcao,
-    nte: isTerritorial ? session.nte : '',
-    municipio: '',
-    tipoDeslocamento: '',
-    quilometragem: '',
-    valorTransporte: '',
-    hospedagem: '',
-    banco: '',
-    tipoConta: '',
-    agencia: '',
-    conta: '',
-    tipoChavePix: '',
-    chavePix: '',
+    nome: '', cpf: '', contato: '', email: '',
+    funcao: '', nte: '', municipio: '',
+    tipoDeslocamento: '', quilometragem: '', valorTransporte: '',
+    hospedagem: '', banco: '', tipoConta: '',
+    agencia: '', conta: '', tipoChavePix: '', chavePix: '',
   })
 
   const [municipios, setMunicipios] = useState<string[]>([])
@@ -79,16 +62,11 @@ export default function FormularioClient({ session }: Props) {
   const [sucesso, setSucesso] = useState(false)
   const [erroGeral, setErroGeral] = useState('')
 
+  const isTerritorial = form.funcao === 'Coordenador Territorial'
   const isNte26 = form.nte === NTE26
   const precisaDesl = !isNte26 && form.tipoDeslocamento && form.tipoDeslocamento !== 'Não precisa de deslocamento'
 
-  // Popula municípios ao montar se já tem NTE (Territorial)
-  useEffect(() => {
-    if (isTerritorial && session.nte) {
-      const entry = NTE_LIST.find(n => n.label === session.nte)
-      if (entry) setMunicipios(entry.muns.map(munAcentuado))
-    }
-  }, [isTerritorial, session.nte])
+  useEffect(() => {}, [])
 
   function set(field: string, value: string) {
     setForm(f => ({ ...f, [field]: value }))
@@ -118,11 +96,19 @@ export default function FormularioClient({ session }: Props) {
     return 'R$ ' + reais + ',' + cents
   }
 
+  function onFuncaoChange(funcao: string) {
+    setForm(f => ({ ...f, funcao, nte: '', municipio: '' }))
+    setMunicipios([])
+  }
+
   function onNteChange(nteLabel: string) {
     const entry = NTE_LIST.find(n => n.label === nteLabel)
     const muns = entry ? entry.muns.map(munAcentuado) : []
     setMunicipios(muns)
-    setForm(f => ({ ...f, nte: nteLabel, municipio: '' }))
+    setForm(f => ({ ...f, nte: nteLabel, municipio: '',
+      tipoDeslocamento: nteLabel === NTE26 ? '' : f.tipoDeslocamento,
+      hospedagem: nteLabel === NTE26 ? '' : f.hospedagem,
+    }))
   }
 
   function validarCPF(cpf: string) {
@@ -213,22 +199,11 @@ export default function FormularioClient({ session }: Props) {
 
   return (
     <main className="min-h-screen bg-[#e8e8e8]">
-      <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Image src="/brasao_estado.png" alt="Estado da Bahia" width={36} height={36} />
-          <div>
-            <p className="text-xs text-gray-500">SABE 2025 — Capacitação Equipe de Campo</p>
-            <p className="text-sm font-semibold text-gray-900">Formulário de Inscrição</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-4">
-          <div className="text-right hidden sm:block">
-            <p className="text-sm font-medium text-gray-800">{session.nome}</p>
-            <p className="text-xs text-gray-500">{session.funcao}</p>
-          </div>
-          <form action="/api/auth/logout" method="POST">
-            <button className="text-xs text-gray-500 hover:text-gray-900">Sair</button>
-          </form>
+      <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-3">
+        <Image src="/brasao_estado.png" alt="Estado da Bahia" width={36} height={36} />
+        <div>
+          <p className="text-xs text-gray-500">SABE 2025 — Avaliação de Entrada EJA e EPT</p>
+          <p className="text-sm font-semibold text-gray-900">Formulário de Inscrição — Equipe de Campo</p>
         </div>
       </header>
 
@@ -258,7 +233,12 @@ export default function FormularioClient({ session }: Props) {
               <input type="email" value={form.email} onChange={e => set('email', e.target.value)} className={inputCls} placeholder="seu@email.com" />
             </Field>
             <Field id="funcao" label="Função *" erro={erros.funcao}>
-              <input value={form.funcao} disabled className={inputCls} />
+              <select value={form.funcao} onChange={e => onFuncaoChange(e.target.value)} className={inputCls}>
+                <option value="">Selecione sua função</option>
+                <option value="Coordenador Estadual">Coordenador Estadual</option>
+                <option value="Subcoordenador Estadual">Subcoordenador Estadual</option>
+                <option value="Coordenador Territorial">Coordenador Territorial</option>
+              </select>
             </Field>
           </div>
 
