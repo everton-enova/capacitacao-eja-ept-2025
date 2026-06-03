@@ -47,6 +47,16 @@ const inputCls = 'w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-3
 const labelCls = 'block text-xs font-semibold text-gray-950 uppercase tracking-wide mb-1'
 const sectionCls = 'text-xs font-bold tracking-widest text-gray-950 uppercase pb-2 border-b-2 border-gray-300'
 
+function Field({ label, erro, children }: { label: string; erro?: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <label className={labelCls}>{label}</label>
+      {children}
+      {erro && <p className="text-xs text-red-600 mt-1 font-medium">{erro}</p>}
+    </div>
+  )
+}
+
 export default function FormularioClient() {
   const [form, setForm] = useState({
     nome: '', cpf: '', contato: '', email: '',
@@ -173,16 +183,6 @@ export default function FormularioClient() {
     setLoading(false)
     if (res.ok) { setSucesso(true) }
     else { const d = await res.json(); setErroGeral(d.error ?? 'Erro ao enviar. Tente novamente.') }
-  }
-
-  function Field({ id, label, erro, children }: { id: string; label: string; erro?: string; children: React.ReactNode }) {
-    return (
-      <div>
-        <label className={labelCls}>{label}</label>
-        {children}
-        {erro && <p className="text-xs text-red-600 mt-1 font-medium">{erro}</p>}
-      </div>
-    )
   }
 
   if (sucesso) {
