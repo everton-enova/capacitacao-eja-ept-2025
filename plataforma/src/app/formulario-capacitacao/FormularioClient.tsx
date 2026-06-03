@@ -379,8 +379,8 @@ export default function FormularioClient() {
 
           {/* CIÊNCIA E RESPONSABILIDADE */}
           <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
-            <p className={sectionCls}>5. Ciência e Responsabilidade</p>
-            <p className="text-xs text-gray-500 leading-relaxed">Leia e confirme cada item abaixo antes de enviar.</p>
+            <p className={sectionCls}>5. Ciência e Responsabilidade <span className="text-red-600">*</span></p>
+            <p className="text-xs text-gray-500 leading-relaxed">Todos os itens abaixo são obrigatórios. Leia e confirme cada um antes de enviar.</p>
 
             {[
               'Declaro estar ciente de que, para os devidos fins, o deslocamento não pode ser realizado por meio de carro oficial, em conformidade com as normas e diretrizes administrativas vigentes que regulamentam a utilização de veículos institucionais.',

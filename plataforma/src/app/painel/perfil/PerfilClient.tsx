@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react'
 import type { SessionUser } from '@/lib/auth'
 
+const NTE_LIST = ["NTE 01 - Irecê","NTE 02 - Velho Chico","NTE 03 - Chapada Diamantina","NTE 04 - Sisal","NTE 05 - Litoral Sul","NTE 06 - Baixo Sul","NTE 07 - Extremo Sul","NTE 08 - Médio Sudoeste da Bahia","NTE 09 - Vale do Jiquiriçá","NTE 10 - Sertão do São Francisco","NTE 11 - Bacia do Rio Grande","NTE 12 - Bacia do Paramirim","NTE 13 - Sertão Produtivo","NTE 14 - Piemonte do Paraguaçu","NTE 15 - Bacia do Jacuípe","NTE 16 - Piemonte da Diamantina","NTE 17 - Semiárido Nordeste II","NTE 18 - Litoral Norte e Agreste","NTE 19 - Portal do Sertão","NTE 20 - Sudoeste Baiano","NTE 21 - Recôncavo","NTE 22 - Médio Rio de Contas","NTE 23 - Bacia do Rio Corrente","NTE 24 - Itaparica","NTE 25 - Piemonte Norte do Itapicuru","NTE 26 - Metropolitano de Salvador","NTE 27 - Costa do Descobrimento"]
+
 const inputCls = 'w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-3 text-sm text-gray-950 focus:outline-none focus:border-gray-700 focus:ring-2 focus:ring-gray-200 disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed'
 const labelCls = 'block text-xs font-semibold text-gray-950 uppercase tracking-wide mb-1'
 const sectionCls = 'text-xs font-bold tracking-widest text-gray-950 uppercase pb-2 border-b-2 border-gray-200 mb-4'
@@ -18,7 +20,7 @@ interface Props { session: SessionUser }
 
 export default function PerfilClient({ session }: Props) {
   const [form, setForm] = useState({
-    nome: '', contato: '', email: '',
+    nome: '', nte: '', contato: '', email: '',
     banco: '', agencia: '', conta: '', tipoConta: '',
   })
   const [original, setOriginal] = useState(form)
@@ -36,6 +38,7 @@ export default function PerfilClient({ session }: Props) {
         if (!insc) { setSemInscricao(true); setLoading(false); return }
         const vals = {
           nome: col?.nome ?? '',
+          nte: col?.nte ?? '',
           contato: insc.contato ?? '',
           email: insc.email ?? '',
           banco: insc.banco ?? '',
@@ -106,12 +109,17 @@ export default function PerfilClient({ session }: Props) {
               <label className={labelCls}>Função</label>
               <input value={session.funcao} disabled className={inputCls} />
             </div>
-            {session.nte && (
-              <div className="col-span-2">
-                <label className={labelCls}>NTE</label>
-                <input value={session.nte} disabled className={inputCls} />
-              </div>
-            )}
+            <div className="col-span-2">
+              <label className={labelCls}>NTE</label>
+              {session.funcao === 'Coordenador Territorial' ? (
+                <select value={form.nte} onChange={e => set('nte', e.target.value)} className={inputCls}>
+                  <option value="">Selecione o NTE</option>
+                  {NTE_LIST.map(n => <option key={n} value={n}>{n}</option>)}
+                </select>
+              ) : (
+                <input value={form.nte} onChange={e => set('nte', e.target.value)} className={inputCls} placeholder="NTE (se aplicável)" />
+              )}
+            </div>
           </div>
         </div>
 

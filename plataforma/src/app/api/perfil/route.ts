@@ -22,12 +22,12 @@ export async function PATCH(req: NextRequest) {
   const session = await getSession()
   if (!session) return NextResponse.json({ error: 'Não autenticado.' }, { status: 401 })
 
-  const { nome, contato, email, banco, agencia, conta, tipoConta } = await req.json()
+  const { nome, nte, contato, email, banco, agencia, conta, tipoConta } = await req.json()
 
   await connectDB()
 
   await Promise.all([
-    Colaborador.findOneAndUpdate({ cpf: session.cpf }, { nome }),
+    Colaborador.findOneAndUpdate({ cpf: session.cpf }, { nome, ...(nte !== undefined ? { nte } : {}) }),
     Inscricao.findOneAndUpdate(
       { cpf: session.cpf },
       { nome, contato, email, banco, agencia, conta, tipoConta }
