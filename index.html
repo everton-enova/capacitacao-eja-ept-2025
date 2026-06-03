@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Capacitação SABE 2025 – Inscrição</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #f0f2f5; --surface: #ffffff; --border: #d8dce6; --accent: #1a3a8a;
+      --accent-dark: #0f2560; --accent-red: #d42b2b; --accent-red-light: #e84545;
+      --text: #1e2a3a; --muted: #6b7a8d; --error: #d42b2b; --success: #1a8a4a; --input-bg: #f7f8fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; background-color: var(--bg); }
+    .container { display: flex; width: 100%; min-height: 100vh; }
+
+    /* Lado Esquerdo */
+    .left-panel {
+      flex: 1; background-size: cover; background-position: center; position: relative;
+      display: flex; align-items: center; justify-content: center; padding: 2rem;
+      background-image: url('background.webp');
+    }
+    .left-panel::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 37, 96, 0.88);
+    }
+    .event-info { position: relative; z-index: 1; color: #fff; max-width: 420px; text-align: left; }
+
+    .logo-sec { position: absolute; bottom: 2rem; left: 0; right: 0; text-align: center; z-index: 1; }
+    .logo-sec img { height: 56px; width: auto; display: inline-block; }
+
+    .event-info h1 { font-size: 0.95rem; font-weight: 400; line-height: 1.4; margin-bottom: 0.2rem; color: rgba(255,255,255,0.85); }
+    .event-info h1 .highlight { display: block; font-size: 4rem; font-weight: 700; margin-top: 0.1rem; line-height: 1.05; color: #fff; }
+    .event-info .subtitle { font-size: 0.9rem; font-weight: 500; color: rgba(255,255,255,0.9); margin-bottom: 0.5rem; }
+    .event-info p.desc { font-size: 0.78rem; color: rgba(255,255,255,0.7); margin-bottom: 2rem; line-height: 1.5; }
+
+    .info-group { padding: 1.5rem 0; border-top: 1px solid rgba(255,255,255,0.15); border-bottom: 1px solid rgba(255,255,255,0.15); margin-bottom: 1.5rem; }
+    .info-item { display: flex; align-items: flex-start; margin-bottom: 1.1rem; }
+    .info-item:last-child { margin-bottom: 0; }
+    .info-icon { font-size: 1.1rem; margin-right: 14px; color: #fff; width: 20px; text-align: center; margin-top: 1px; }
+    .info-text strong { display: block; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.6); margin-bottom: 3px; }
+    .info-text span { font-size: 0.82rem; font-weight: 300; color: #fff; line-height: 1.4; }
+
+    /* Lado Direito */
+    .right-panel { flex: 1; display: flex; align-items: flex-start; justify-content: center; padding: 2.5rem 2rem; background: var(--surface); overflow-y: auto; }
+    .card { width: 100%; max-width: 520px; animation: fadeUp 0.6s cubic-bezier(.22,.68,0,1.2) both; padding-bottom: 2rem; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+    .mobile-br { display: none; }
+    .form-header { margin-bottom: 1rem; }
+    .form-header h2 { font-size: 1.4rem; color: var(--accent); font-weight: 600; margin-bottom: 0.2rem; }
+    .form-header p { color: var(--muted); font-size: 0.85rem; }
+
+    /* Alerta */
+    .alert-info {
+      background: rgba(26, 58, 138, 0.05); border: 1.5px solid rgba(26, 58, 138, 0.18);
+      border-radius: 8px; padding: 0.85rem 1rem; font-size: 0.77rem; color: var(--accent);
+      line-height: 1.55; margin-bottom: 1.25rem;
+    }
+    .alert-info strong { display: block; margin-bottom: 0.25rem; font-size: 0.78rem; font-weight: 700; }
+
+    /* Títulos de seção dentro do grid */
+    .section-title {
+      font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; color: var(--accent);
+      text-transform: uppercase; padding-bottom: 0.45rem;
+      border-bottom: 2px solid var(--border); margin-top: 0.25rem;
+    }
+
+    .form-grid { display: grid; gap: 0.9rem; }
+    .field { display: flex; flex-direction: column; gap: 0.3rem; }
+    label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; color: var(--accent); text-transform: uppercase; }
+    label span { color: var(--accent-red); margin-left: 2px; }
+    .field-hint { font-size: 0.71rem; color: var(--muted); line-height: 1.4; margin-top: 0.1rem; }
+
+    input, select { background: var(--input-bg); border: 1.5px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; color: var(--text); font-family: 'Inter', sans-serif; font-size: 0.92rem; transition: border-color 0.2s, box-shadow 0.2s; outline: none; width: 100%; }
+    input:focus, select:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 3px rgba(26,58,138,0.1); }
+
+    .field-error { font-size: 0.73rem; color: var(--error); display: none; font-weight: 500; }
+    .field.invalid input, .field.invalid select { border-color: var(--error); }
+    .field.invalid .field-error { display: block; }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+
+    .btn { margin-top: 1rem; background: var(--accent-red); color: #ffffff; border: none; border-radius: 8px; padding: 0.9rem 1.5rem; font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 600; cursor: pointer; width: 100%; transition: background 0.2s; box-shadow: 0 4px 12px rgba(212,43,43,0.2); }
+    .btn:hover { background: var(--accent-red-light); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn .spinner { display: none; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .btn.loading .btn-text { display: none; }
+    .btn.loading .spinner { display: block; }
+
+    .toast { margin-top: 1rem; padding: 0.85rem 1rem; border-radius: 8px; font-size: 0.85rem; text-align: center; display: none; font-weight: 500; line-height: 1.4; }
+    .toast.success { background: rgba(26,138,74,0.08); border: 1.5px solid rgba(26,138,74,0.2); color: var(--success); display: block; }
+    .toast.error { background: rgba(212,43,43,0.06); border: 1.5px solid rgba(212,43,43,0.15); color: var(--error); display: block; }
+
+    /* Countdown */
+    .countdown-wrap { margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1.5px solid var(--border); }
+    .countdown-label { font-size: 0.67rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 0.6rem; }
+    .countdown-boxes { display: flex; gap: 0.5rem; }
+    .countdown-box { flex: 1; text-align: center; }
+    .countdown-box span { display: block; font-size: 1.7rem; font-weight: 700; color: var(--accent-red); line-height: 1; }
+    .countdown-box small { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-top: 3px; display: block; }
+    .countdown-sep { font-size: 1.5rem; font-weight: 300; color: var(--border); align-self: flex-start; padding-top: 2px; }
+    .countdown-aviso { margin-top: 0.6rem; font-size: 0.72rem; color: var(--accent-red); font-weight: 500; }
+    .form-encerrado { text-align: center; padding: 2.5rem 0; }
+    .form-encerrado h3 { color: var(--accent-red); font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .form-encerrado p { color: var(--muted); font-size: 0.9rem; }
+
+    @media (max-width: 900px) {
+      .container { flex-direction: column; }
+      .left-panel { min-height: auto; padding: 3rem 1.5rem 9rem; }
+      .event-info { text-align: center; max-width: 100%; }
+      .logo-sec { position: absolute; display: block; text-align: center; bottom: 2.5rem; }
+      .event-info h1 { font-size: 0.9rem; }
+      .event-info h1 .highlight { font-size: 3.2rem; }
+      .event-info .subtitle { font-size: 0.88rem; }
+      .info-group { display: table; margin: 0 auto; }
+      .info-item { justify-content: flex-start; text-align: left; }
+      .mobile-br { display: inline; }
+      .right-panel { padding: 2rem 1.25rem 3rem; overflow-y: visible; }
+      .card { max-width: 100%; }
+      .card label { text-align: left; }
+      .card .field-error { text-align: left; }
+      .countdown-boxes { justify-content: center; }
+      .countdown-aviso { font-size: 0.82rem; font-weight: 600; }
+      .form-header h2 { font-size: 1.5rem; }
+      input, select { font-size: 1rem; padding: 0.85rem 1rem; }
+      .btn { font-size: 1rem; padding: 1rem 1.5rem; }
+      .row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="left-panel">
+    <div class="event-info">
+      <h1>Capacitação para Equipe de Campo<span class="highlight">SABE 2025</span></h1>
+      <p class="subtitle">Avaliação de Entrada EJA e EPT</p>
+      <p class="desc">Preencha o formulário ao lado<br class="mobile-br"> com atenção redobrada a todos os campos.</p>
+
+      <div class="info-group">
+        <div class="info-item">
+          <div class="info-icon">📅</div>
+          <div class="info-text"><strong>Data</strong><span>03 a 05 de Julho de 2026</span></div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">📍</div>
+          <div class="info-text"><strong>Local</strong><span>A definir</span></div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">⏰</div>
+          <div class="info-text"><strong>Horário</strong><span>A definir</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="logo-sec">
+      <img src="brasao_estado.png" alt="Estado da Bahia – Secretaria da Educação" />
+    </div>
+  </div>
+
+  <div class="right-panel">
+    <div class="card">
+
+      <div class="countdown-wrap" id="countdown-wrap">
+        <div class="countdown-label">Inscrições encerram em</div>
+        <div class="countdown-boxes">
+          <div class="countdown-box"><span id="cd-dias">--</span><small>Dias</small></div>
+          <div class="countdown-sep">:</div>
+          <div class="countdown-box"><span id="cd-horas">--</span><small>Horas</small></div>
+          <div class="countdown-sep">:</div>
+          <div class="countdown-box"><span id="cd-min">--</span><small>Min</small></div>
+          <div class="countdown-sep">:</div>
+          <div class="countdown-box"><span id="cd-seg">--</span><small>Seg</small></div>
+        </div>
+        <div class="countdown-aviso">As inscrições não poderão ser feitas<br class="mobile-br"> no local do evento!</div>
+      </div>
+
+      <div id="form-encerrado" class="form-encerrado" style="display:none;">
+        <h3>Inscrições encerradas</h3>
+        <p>O prazo de inscrições foi encerrado. Entre em contato com a organização.</p>
+      </div>
+
+      <div id="form-container">
+        <div class="form-header">
+          <h2>Formulário de Inscrição</h2>
+          <p>Capacitação da Equipe de Campo – SABE 2025</p>
+        </div>
+
+        <div class="alert-info">
+          <strong>Atenção — leia antes de preencher</strong>
+          Preencha todos os campos com atenção redobrada, especialmente os dados pessoais, bancários e de deslocamento. Informações incorretas, incompletas ou inconsistentes poderão ocasionar atrasos ou impossibilidade de processamento do pagamento da ajuda de custo. <strong>Revise cuidadosamente todos os dados antes de enviar.</strong>
+        </div>
+
+        <form id="form" class="form-grid" novalidate>
+
+          <!-- ── DADOS PESSOAIS ─────────────────────────── -->
+          <div class="section-title">Dados Pessoais</div>
+
+          <div class="field" id="f-nome">
+            <label for="nome">Nome completo <span>*</span></label>
+            <input type="text" id="nome" placeholder="Seu nome completo" autocomplete="name"/>
+            <span class="field-error">Por favor, informe seu nome completo.</span>
+          </div>
+
+          <div class="row">
+            <div class="field" id="f-cpf">
+              <label for="cpf">CPF <span>*</span></label>
+              <input type="text" id="cpf" placeholder="000.000.000-00" maxlength="14"/>
+              <span class="field-error">CPF inválido.</span>
+            </div>
+            <div class="field" id="f-contato">
+              <label for="contato">Contato (com DDD) <span>*</span></label>
+              <input type="text" id="contato" placeholder="(00) 00000-0000" maxlength="15"/>
+              <span class="field-error">Contato inválido.</span>
+            </div>
+          </div>
+
+          <div class="field" id="f-email">
+            <label for="email">E-mail <span>*</span></label>
+            <input type="email" id="email" placeholder="seu@email.com" autocomplete="email"/>
+            <span class="field-error">Informe um e-mail válido.</span>
+          </div>
+
+          <div class="field" id="f-funcao">
+            <label for="funcao">Função <span>*</span></label>
+            <select id="funcao">
+              <option value="" disabled selected>Selecione sua função</option>
+              <option value="Coordenador Estadual">Coordenador Estadual</option>
+              <option value="Subcoordenador Estadual">Subcoordenador Estadual</option>
+              <option value="Coordenador Territorial">Coordenador Territorial</option>
+            </select>
+            <span class="field-error">Selecione uma função.</span>
+          </div>
+
+          <!-- ── DADOS TERRITORIAIS (condicional) ──────── -->
+          <div class="section-title" id="title-territorial" style="display:none;">Dados Territoriais</div>
+          <div class="row" id="row-territorial" style="display:none;">
+            <div class="field" id="f-nte">
+              <label for="nte">NTE <span>*</span></label>
+              <input type="text" id="nte" placeholder="Ex: NTE 12"/>
+              <span class="field-error">Informe o NTE.</span>
+            </div>
+            <div class="field" id="f-municipio">
+              <label for="municipio">Município <span>*</span></label>
+              <select id="municipio">
+                <option value="" disabled selected>Selecione o município</option>
+              </select>
+              <span class="field-error">Selecione um município.</span>
+            </div>
+          </div>
+
+          <!-- ── DESLOCAMENTO ───────────────────────────── -->
+          <div class="section-title">Deslocamento</div>
+
+          <div class="field" id="f-tipo-deslocamento">
+            <label for="tipoDeslocamento">Tipo de deslocamento <span>*</span></label>
+            <select id="tipoDeslocamento">
+              <option value="" disabled selected>Selecione o tipo</option>
+              <option value="Veículo próprio">Veículo próprio</option>
+              <option value="Ônibus">Ônibus</option>
+              <option value="Aéreo">Aéreo</option>
+              <option value="Não precisa de deslocamento">Não precisa de deslocamento</option>
+            </select>
+            <span class="field-error">Selecione o tipo de deslocamento.</span>
+          </div>
+
+          <div id="bloco-quilometragem">
+            <div class="row">
+              <div class="field" id="f-quilometragem">
+                <label for="quilometragem">Quilometragem (Ida + Volta) <span>*</span></label>
+                <input type="number" id="quilometragem" placeholder="Ex: 340" min="1"/>
+                <div class="field-hint">Distância total percorrida (ida e volta) entre o município de origem e Salvador.</div>
+                <span class="field-error">Informe a quilometragem.</span>
+              </div>
+              <div class="field" id="f-valor-transporte">
+                <label for="valorTransporte">Valor do transporte (Ida + Volta) <span>*</span></label>
+                <input type="text" id="valorTransporte" placeholder="R$ 0,00"/>
+                <div class="field-hint">Passagem rodoviária ou gasolina (nota fiscal do posto).</div>
+                <span class="field-error">Informe o valor do transporte.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── DADOS BANCÁRIOS ───────────────────────── -->
+          <div class="section-title">Dados Bancários</div>
+
+          <div class="row">
+            <div class="field" id="f-banco">
+              <label for="banco">Banco <span>*</span></label>
+              <input type="text" id="banco" placeholder="Ex: Banco do Brasil"/>
+              <span class="field-error">Informe o banco.</span>
+            </div>
+            <div class="field" id="f-tipo-conta">
+              <label for="tipoConta">Tipo de conta <span>*</span></label>
+              <select id="tipoConta">
+                <option value="" disabled selected>Selecione</option>
+                <option value="Corrente">Conta Corrente</option>
+                <option value="Poupança">Conta Poupança</option>
+              </select>
+              <span class="field-error">Selecione o tipo de conta.</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="field" id="f-agencia">
+              <label for="agencia">Agência <span>*</span></label>
+              <input type="text" id="agencia" placeholder="0000"/>
+              <span class="field-error">Informe a agência.</span>
+            </div>
+            <div class="field" id="f-conta">
+              <label for="conta">Conta <span>*</span></label>
+              <input type="text" id="conta" placeholder="00000-0"/>
+              <span class="field-error">Informe o número da conta.</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="field" id="f-tipo-chave-pix">
+              <label for="tipoChavePix">Tipo de chave PIX <span>*</span></label>
+              <select id="tipoChavePix">
+                <option value="" disabled selected>Selecione</option>
+                <option value="CPF">CPF</option>
+                <option value="Telefone">Telefone</option>
+                <option value="E-mail">E-mail</option>
+                <option value="Chave aleatória">Chave aleatória</option>
+              </select>
+              <span class="field-error">Selecione o tipo de chave PIX.</span>
+            </div>
+            <div class="field" id="f-chave-pix">
+              <label for="chavePix">Chave PIX <span>*</span></label>
+              <input type="text" id="chavePix" placeholder="Informe a chave"/>
+              <span class="field-error">Informe a chave PIX.</span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn" id="btn-submit">
+            <span class="btn-text">Enviar Inscrição</span>
+            <div class="spinner"></div>
+          </button>
+          <div class="toast" id="toast"></div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  // =============================================================
+  // COLE A URL DO SEU APPS SCRIPT AQUI:
+  var APPS_SCRIPT_URL = 'https://script.google.com/a/macros/enova.educacao.ba.gov.br/s/AKfycbzHo9PHrEqpNT5bTe7WQu9XIoSraCNyoWP0ODC2pzO16q1FBEpZCP2K9z_s-GbLSla-/exec';
+  // =============================================================
+
+  // =============================================================
+  // PRAZO DE ENCERRAMENTO DAS INSCRIÇÕES:
+  var DEADLINE = new Date('2026-07-02T18:00:00-03:00');
+  // =============================================================
+
+  var TODOS_MUNICIPIOS = ["Abaíra","Abaré","Acajutiba","Adustina","Água Fria","Aiquara","Alagoinhas","Alcobaça","Almadina","Amargosa","Amélia Rodrigues","América Dourada","Anagé","Andaraí","Andorinha","Angical","Anguera","Antas","Antônio Cardoso","Antônio Gonçalves","Aporá","Apuarema","Araçás","Aracatu","Araci","Aramari","Arataca","Aratuípe","Aurelino Leal","Baianópolis","Baixa Grande","Banzaê","Barra","Barra da Estiva","Barra do Choça","Barra do Mendes","Barra do Rocha","Barreiras","Barro Alto","Barro Preto","Barrocas","Belmonte","Belo Campo","Biritinga","Boa Nova","Boa Vista do Tupim","Bom Jesus da Lapa","Bom Jesus da Serra","Boninal","Bonito","Boquira","Botuporã","Brejões","Brejolândia","Brotas de Macaúbas","Brumado","Buerarema","Buritirama","Caatiba","Cabaceiras do Paraguaçu","Cachoeira","Caculé","Caém","Caetanos","Caetité","Cafarnaum","Cairu","Caldeirão Grande","Camacan","Camaçari","Camamu","Campo Alegre de Lourdes","Campo Formoso","Canápolis","Canarana","Canavieiras","Candeal","Candeias","Candiba","Cândido Sales","Cansanção","Canudos","Capela do Alto Alegre","Capim Grosso","Caraíbas","Caravelas","Cardeal da Silva","Carinhanha","Casa Nova","Castro Alves","Catolândia","Catu","Caturama","Central","Chorrochó","Cícero Dantas","Cipó","Coaraci","Cocos","Conceição da Feira","Conceição do Almeida","Conceição do Coité","Conceição do Jacuípe","Conde","Condeúba","Contendas do Sincorá","Coração de Maria","Cordeiros","Coribe","Coronel João Sá","Correntina","Cotegipe","Cravolândia","Crisópolis","Cristópolis","Cruz das Almas","Curaçá","Dário Meira","Dias d'Ávila","Dom Basílio","Dom Macedo Costa","Elísio Medrado","Encruzilhada","Entre Rios","Érico Cardoso","Esplanada","Euclides da Cunha","Eunápolis","Fátima","Feira da Mata","Feira de Santana","Filadélfia","Firmino Alves","Floresta Azul","Formosa do Rio Preto","Gandu","Gavião","Gentio do Ouro","Glória","Gongogi","Governador Mangabeira","Guajeru","Guanambi","Guaratinga","Heliópolis","Iaçu","Ibiassucê","Ibicaraí","Ibicoara","Ibicuí","Ibipeba","Ibipitanga","Ibiquera","Ibirapitanga","Ibirapuã","Ibirataia","Ibitiara","Ibititá","Ibotirama","Ichu","Igaporã","Igrapiúna","Iguaí","Ilhéus","Inhambupe","Ipecaetá","Ipiaú","Ipirá","Ipupiara","Irajuba","Iramaia","Iraquara","Irará","Irecê","Itabela","Itaberaba","Itabuna","Itacaré","Itaeté","Itagi","Itagibá","Itagimirim","Itaguaçu da Bahia","Itaju do Colônia","Itajuípe","Itamaraju","Itamari","Itambé","Itanagra","Itanhém","Itaparica","Itapé","Itapebi","Itapetinga","Itapicuru","Itapitanga","Itaquara","Itarantim","Itatim","Itiruçu","Itiúba","Itororó","Ituaçu","Ituberá","Iuiú","Jaborandi","Jacaraci","Jacobina","Jaguaquara","Jaguarari","Jaguaripe","Jandaíra","Jequié","Jeremoabo","Jiquiriçá","Jitaúna","João Dourado","Juazeiro","Jucuruçu","Jussara","Jussari","Jussiape","Lafaiete Coutinho","Lagoa Real","Laje","Lajedão","Lajedinho","Lajedo do Tabocal","Lamarão","Lapão","Lauro de Freitas","Lençóis","Licínio de Almeida","Livramento de Nossa Senhora","Luís Eduardo Magalhães","Macajuba","Macarani","Macaúbas","Macururé","Madre de Deus","Maetinga","Maiquinique","Mairi","Malhada","Malhada de Pedras","Manoel Vitorino","Mansidão","Maracás","Maragogipe","Maraú","Marcionílio Souza","Mascote","Mata de São João","Matina","Medeiros Neto","Miguel Calmon","Milagres","Mirangaba","Mirante","Monte Santo","Morpara","Morro do Chapéu","Mortugaba","Mucugê","Mucuri","Mulungu do Morro","Mundo Novo","Muniz Ferreira","Muquém de São Francisco","Muritiba","Mutuípe","Nazaré","Nilo Peçanha","Nordestina","Nova Canaã","Nova Fátima","Nova Ibiá","Nova Itarana","Nova Redenção","Nova Soure","Nova Viçosa","Novo Horizonte","Novo Triunfo","Olindina","Oliveira dos Brejinhos","Ouriçangas","Ourolândia","Palmas de Monte Alto","Palmeiras","Paramirim","Paratinga","Paripiranga","Pau Brasil","Paulo Afonso","Pé de Serra","Pedrão","Pedro Alexandre","Piatã","Pilão Arcado","Pindaí","Pindobaçu","Pintadas","Piraí do Norte","Piripá","Piritiba","Planaltino","Planalto","Poções","Pojuca","Ponto Novo","Porto Seguro","Potiraguá","Prado","Presidente Dutra","Presidente Jânio Quadros","Presidente Tancredo Neves","Queimadas","Quijingue","Quixabeira","Rafael Jambeiro","Remanso","Retirolândia","Riachão das Neves","Riachão do Jacuípe","Riacho de Santana","Ribeira do Amparo","Ribeira do Pombal","Ribeirão do Largo","Rio Real","Rio de Contas","Rio do Antônio","Rio do Pires","Rodelas","Ruy Barbosa","Salinas da Margarida","Salvador","Santa Bárbara","Santa Brígida","Santa Cruz Cabrália","Santa Cruz da Vitória","Santa Inês","Santa Luzia","Santa Maria da Vitória","Santa Rita de Cássia","Santa Teresinha","Santaluz","Santana","Santanópolis","Santo Amaro","Santo Antônio de Jesus","Santo Estêvão","São Desidério","São Domingos","São Felipe","São Félix","São Félix do Coribe","São Francisco do Conde","São Gabriel","São Gonçalo dos Campos","São José da Vitória","São José do Jacuípe","São Miguel das Matas","São Sebastião do Passé","Sapeaçu","Sátiro Dias","Saubara","Saúde","Seabra","Sebastião Laranjeiras","Senhor do Bonfim","Sento Sé","Serra Dourada","Serra Preta","Serra do Ramalho","Serrinha","Serrolândia","Simões Filho","Sítio do Mato","Sítio do Quinto","Sobradinho","Souto Soares","Tabocas do Brejo Velho","Tanhaçu","Tanque Novo","Tanquinho","Taperoá","Tapiramutá","Teixeira de Freitas","Teodoro Sampaio","Teofilândia","Teolândia","Terra Nova","Tremedal","Tucano","Uauá","Ubaíra","Ubaitaba","Ubatã","Uibaí","Umburanas","Una","Urandi","Uruçuca","Utinga","Valença","Valente","Várzea Nova","Várzea da Roça","Várzea do Poço","Varzedo","Vera Cruz","Vereda","Vitória da Conquista","Wagner","Wanderley","Wenceslau Guimarães","Xique-Xique"];
+
+  // Popular municípios
+  (function() {
+    var sel = document.getElementById('municipio');
+    TODOS_MUNICIPIOS.forEach(function(m) { sel.appendChild(new Option(m, m)); });
+  })();
+
+  // Máscara CPF
+  document.getElementById('cpf').addEventListener('input', function(e) {
+    var v = e.target.value.replace(/\D/g,'');
+    if(v.length>3) v = v.slice(0,3)+'.'+v.slice(3);
+    if(v.length>7) v = v.slice(0,7)+'.'+v.slice(7);
+    if(v.length>11) v = v.slice(0,11)+'-'+v.slice(11,13);
+    e.target.value = v.slice(0,14);
+  });
+
+  // Máscara telefone
+  document.getElementById('contato').addEventListener('input', function(e) {
+    var v = e.target.value.replace(/\D/g,'');
+    if(v.length>0) v = '('+v;
+    if(v.length>3) v = v.slice(0,3)+') '+v.slice(3);
+    if(v.length>10) v = v.slice(0,10)+'-'+v.slice(10,15);
+    e.target.value = v.slice(0,15);
+  });
+
+  // Máscara moeda
+  document.getElementById('valorTransporte').addEventListener('input', function(e) {
+    var v = e.target.value.replace(/\D/g,'');
+    if(!v) { e.target.value = ''; return; }
+    v = v.replace(/^0+/,'') || '0';
+    var cents = v.slice(-2).padStart(2,'0');
+    var reais = (v.length > 2 ? v.slice(0,-2) : '0').replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+    e.target.value = 'R$ ' + reais + ',' + cents;
+  });
+
+  // Condicional: função → NTE + Município
+  document.getElementById('funcao').addEventListener('change', function() {
+    var isTerritorial = this.value === 'Coordenador Territorial';
+    document.getElementById('title-territorial').style.display = isTerritorial ? '' : 'none';
+    document.getElementById('row-territorial').style.display = isTerritorial ? 'grid' : 'none';
+    if(!isTerritorial) {
+      document.getElementById('nte').value = '';
+      document.getElementById('municipio').value = '';
+      document.getElementById('f-nte').classList.remove('invalid');
+      document.getElementById('f-municipio').classList.remove('invalid');
+    }
+  });
+
+  // Condicional: deslocamento → quilometragem + valor
+  document.getElementById('tipoDeslocamento').addEventListener('change', function() {
+    var naoDeslocamento = this.value === 'Não precisa de deslocamento';
+    document.getElementById('bloco-quilometragem').style.display = naoDeslocamento ? 'none' : '';
+    if(naoDeslocamento) {
+      document.getElementById('quilometragem').value = '';
+      document.getElementById('valorTransporte').value = '';
+      document.getElementById('f-quilometragem').classList.remove('invalid');
+      document.getElementById('f-valor-transporte').classList.remove('invalid');
+    }
+  });
+
+  // Validação CPF
+  function validarCPF(cpf) {
+    cpf = cpf.replace(/\D/g,'');
+    if(cpf.length!==11 || /^(\d)\1+$/.test(cpf)) return false;
+    var s=0, r, i;
+    for(i=0;i<9;i++) s+=parseInt(cpf[i])*(10-i);
+    r=11-(s%11); if(r>=10) r=0; if(r!==parseInt(cpf[9])) return false;
+    s=0;
+    for(i=0;i<10;i++) s+=parseInt(cpf[i])*(11-i);
+    r=11-(s%11); if(r>=10) r=0;
+    return r===parseInt(cpf[10]);
+  }
+
+  function setInvalid(id, invalid) {
+    document.getElementById('f-'+id).classList.toggle('invalid', invalid);
+  }
+
+  document.getElementById('form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var toast = document.getElementById('toast'); toast.className = 'toast';
+
+    var nome            = document.getElementById('nome').value.trim();
+    var cpf             = document.getElementById('cpf').value.trim();
+    var contato         = document.getElementById('contato').value.trim();
+    var email           = document.getElementById('email').value.trim();
+    var funcao          = document.getElementById('funcao').value;
+    var nte             = document.getElementById('nte').value.trim();
+    var municipio       = document.getElementById('municipio').value;
+    var tipoDesl        = document.getElementById('tipoDeslocamento').value;
+    var quilometragem   = document.getElementById('quilometragem').value.trim();
+    var valorTransporte = document.getElementById('valorTransporte').value.trim();
+    var banco           = document.getElementById('banco').value.trim();
+    var tipoConta       = document.getElementById('tipoConta').value;
+    var agencia         = document.getElementById('agencia').value.trim();
+    var conta           = document.getElementById('conta').value.trim();
+    var tipoChavePix    = document.getElementById('tipoChavePix').value;
+    var chavePix        = document.getElementById('chavePix').value.trim();
+
+    var isTerritorial    = funcao === 'Coordenador Territorial';
+    var precisaDesl      = tipoDesl && tipoDesl !== 'Não precisa de deslocamento';
+
+    var ok = true;
+
+    setInvalid('nome', !nome); if(!nome) ok=false;
+    setInvalid('cpf', !validarCPF(cpf)); if(!validarCPF(cpf)) ok=false;
+    var tel = contato.replace(/\D/g,'');
+    setInvalid('contato', tel.length<10); if(tel.length<10) ok=false;
+    var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    setInvalid('email', !emailOk); if(!emailOk) ok=false;
+    setInvalid('funcao', !funcao); if(!funcao) ok=false;
+
+    if(isTerritorial) {
+      setInvalid('nte', !nte); if(!nte) ok=false;
+      setInvalid('municipio', !municipio); if(!municipio) ok=false;
+    }
+
+    setInvalid('tipo-deslocamento', !tipoDesl); if(!tipoDesl) ok=false;
+
+    if(precisaDesl) {
+      var kmOk = quilometragem && parseInt(quilometragem) >= 1;
+      setInvalid('quilometragem', !kmOk); if(!kmOk) ok=false;
+      var valorOk = valorTransporte && valorTransporte !== 'R$ 0,00';
+      setInvalid('valor-transporte', !valorOk); if(!valorOk) ok=false;
+    }
+
+    setInvalid('banco', !banco); if(!banco) ok=false;
+    setInvalid('tipo-conta', !tipoConta); if(!tipoConta) ok=false;
+    setInvalid('agencia', !agencia); if(!agencia) ok=false;
+    setInvalid('conta', !conta); if(!conta) ok=false;
+    setInvalid('tipo-chave-pix', !tipoChavePix); if(!tipoChavePix) ok=false;
+    setInvalid('chave-pix', !chavePix); if(!chavePix) ok=false;
+
+    if(!ok) {
+      toast.textContent = 'Preencha todos os campos obrigatórios corretamente.';
+      toast.className = 'toast error';
+      return;
+    }
+
+    var btn = document.getElementById('btn-submit');
+    btn.classList.add('loading'); btn.disabled = true;
+
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'inscrever',
+        nome: nome, cpf: cpf, contato: contato, email: email, funcao: funcao,
+        nte: isTerritorial ? nte : '',
+        municipio: isTerritorial ? municipio : '',
+        tipoDeslocamento: tipoDesl,
+        quilometragem: precisaDesl ? quilometragem : '',
+        valorTransporte: precisaDesl ? valorTransporte : '',
+        banco: banco, tipoConta: tipoConta, agencia: agencia, conta: conta,
+        tipoChavePix: tipoChavePix, chavePix: chavePix
+      })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if(data.success) {
+        toast.textContent = 'Inscrição realizada com sucesso! Agradecemos sua participação.';
+        toast.className = 'toast success';
+        document.getElementById('form').reset();
+        document.getElementById('title-territorial').style.display = 'none';
+        document.getElementById('row-territorial').style.display = 'none';
+        document.getElementById('bloco-quilometragem').style.display = '';
+      } else {
+        toast.textContent = data.message || 'Erro ao enviar. Tente novamente.';
+        toast.className = 'toast error';
+      }
+    })
+    .catch(function() {
+      toast.textContent = 'Erro de conexão. Verifique sua internet e tente novamente.';
+      toast.className = 'toast error';
+    })
+    .then(function() { btn.classList.remove('loading'); btn.disabled = false; });
+  });
+
+  // Countdown
+  function pad(n) { return String(n).padStart(2,'0'); }
+
+  function verificarDeadline() {
+    if(new Date() >= DEADLINE) {
+      document.getElementById('countdown-wrap').style.display = 'none';
+      document.getElementById('form-container').style.display = 'none';
+      document.getElementById('form-encerrado').style.display = 'block';
+      return true;
+    }
+    return false;
+  }
+
+  function iniciarContador() {
+    if(verificarDeadline()) return;
+    var intervalo = setInterval(function() {
+      if(verificarDeadline()) { clearInterval(intervalo); return; }
+      var diff = DEADLINE - new Date();
+      document.getElementById('cd-dias').textContent  = pad(Math.floor(diff / 86400000));
+      document.getElementById('cd-horas').textContent = pad(Math.floor((diff % 86400000) / 3600000));
+      document.getElementById('cd-min').textContent   = pad(Math.floor((diff % 3600000) / 60000));
+      document.getElementById('cd-seg').textContent   = pad(Math.floor((diff % 60000) / 1000));
+    }, 1000);
+  }
+
+  iniciarContador();
+</script>
+</body>
+</html>
