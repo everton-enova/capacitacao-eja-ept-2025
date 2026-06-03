@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { getSession } from '@/lib/auth'
 import GerenciarColaboradores from './GerenciarColaboradores'
+import LogoutButton from '@/components/LogoutButton'
 
 export default async function PainelColaboradores() {
   const session = await getSession()

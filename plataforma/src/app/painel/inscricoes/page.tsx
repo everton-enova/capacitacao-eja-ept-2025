@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { getSession } from '@/lib/auth'
 import TabelaInscricoes from './TabelaInscricoes'
+import LogoutButton from '@/components/LogoutButton'
 
 export default async function PainelInscricoes() {
   const session = await getSession()
@@ -23,9 +24,7 @@ export default async function PainelInscricoes() {
               Colaboradores
             </a>
           )}
-          <form action="/api/auth/logout" method="POST">
-            <button type="submit" className="text-xs text-gray-500 hover:text-gray-900">Sair</button>
-          </form>
+          <LogoutButton />
         </div>
       </header>
 
