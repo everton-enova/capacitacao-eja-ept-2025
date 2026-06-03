@@ -380,7 +380,7 @@ export default function FormularioClient() {
 
             {[
               'Declaro estar ciente de que, para os devidos fins, o deslocamento não pode ser realizado por meio de carro oficial, em conformidade com as normas e diretrizes administrativas vigentes que regulamentam a utilização de veículos institucionais.',
-              'Declaro estar ciente de que o acesso à capacitação é restrito exclusivamente aos membros da equipe de aplicação, não sendo permitida a participação, permanência ou acompanhamento de terceiros.',
+              'Declaro estar ciente de que o acesso à capacitação e hospedagem é restrito exclusivamente aos membros da equipe de aplicação, não sendo permitida a participação, permanência ou acompanhamento de terceiros.',
               'Estou ciente de que a prestação de contas deverá ser realizada em até 48 horas após a capacitação, mediante apresentação de: nota fiscal de combustível contendo CNPJ do posto, data da emissão, nome e CPF do colaborador; e/ou comprovante de embarque rodoviário.',
               'Declaro estar ciente de que o valor da ajuda de custo destina-se exclusivamente à cobertura das despesas com alimentação e transporte por carro de aplicativo, não havendo complementação de valores.',
               'Declaro que as informações prestadas neste formulário são verdadeiras e de minha inteira responsabilidade, assumindo eventuais consequências decorrentes de informações incorretas ou inconsistentes.',
