@@ -245,7 +245,7 @@ export default function FormularioClient() {
       <div className="lg:ml-80 xl:ml-96 min-h-screen bg-[#e8e8e8]">
         {/* Header mobile */}
         <header className="lg:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center gap-3">
-          <Image src="/brasao_estado.png" alt="Estado da Bahia" width={32} height={32} />
+          <Image src="/favicon-preto.png" alt="Estado da Bahia" width={44} height={44} className="rounded" />
           <div>
             <p className="text-xs text-gray-500">SABE 2025 — EJA e EPT</p>
             <p className="text-sm font-semibold text-gray-900">Formulário para Capacitação</p>
