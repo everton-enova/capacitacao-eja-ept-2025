@@ -367,11 +367,6 @@ export default function FormularioClient() {
                 <p className="text-xs text-gray-400 mt-1">Informe com o dígito verificador.</p>
               </Field>
             </div>
-            <div className="bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
-              <p className="text-xs text-gray-500">
-                <span className="font-semibold text-gray-700">Chave PIX:</span> será utilizado seu CPF como chave PIX automaticamente.
-              </p>
-            </div>
           </div>
 
           {erroGeral && (
