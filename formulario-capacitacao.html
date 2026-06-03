@@ -31,7 +31,7 @@
     }
     .left-panel::before {
       content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(15, 37, 96, 0.88);
+      background: rgba(28, 28, 28, 0.92);
     }
     .event-info { position: relative; z-index: 1; color: #fff; max-width: 420px; text-align: left; }
 
@@ -215,16 +215,16 @@
           <span class="field-error">Selecione uma função.</span>
         </div>
 
-        <!-- ── DADOS TERRITORIAIS ───────────────────── -->
-        <div class="section-title">Dados Territoriais</div>
-        <div class="field" id="f-nte">
+        <!-- ── DADOS TERRITORIAIS (só Coordenador Territorial) ── -->
+        <div class="section-title" id="title-territorial" style="display:none;">Dados Territoriais</div>
+        <div class="field" id="f-nte" style="display:none;">
           <label for="nte">NTE <span>*</span></label>
           <select id="nte">
             <option value="" disabled selected>Selecione o NTE</option>
           </select>
           <span class="field-error">Selecione o NTE.</span>
         </div>
-        <div class="field" id="f-municipio">
+        <div class="field" id="f-municipio" style="display:none;">
           <label for="municipio">Município <span>*</span></label>
           <select id="municipio" disabled>
             <option value="" disabled selected>Selecione o NTE primeiro</option>
@@ -233,7 +233,7 @@
         </div>
 
         <!-- ── DESLOCAMENTO ───────────────────────────── -->
-        <div class="section-title">Deslocamento</div>
+        <div class="section-title" id="title-deslocamento">Deslocamento</div>
 
         <div class="field" id="f-tipo-deslocamento">
           <label for="tipoDeslocamento">Tipo de deslocamento <span>*</span></label>
@@ -265,7 +265,7 @@
         </div>
 
         <!-- ── HOSPEDAGEM ─────────────────────────────── -->
-        <div class="section-title">Hospedagem</div>
+        <div class="section-title" id="title-hospedagem">Hospedagem</div>
 
         <div class="field" id="f-hospedagem">
           <label for="hospedagem">Precisa de hospedagem? <span>*</span></label>
@@ -392,9 +392,14 @@
     NTE_LIST.forEach(function(n) { sel.appendChild(new Option(n.label, n.label)); });
   })();
 
-  // Cascade NTE → Município
+  var NTE26 = 'NTE 26 - Metropolitano de Salvador';
+
+  // Cascade NTE → Município + lógica NTE 26
   document.getElementById('nte').addEventListener('change', function() {
-    var entry = NTE_LIST.filter(function(n) { return n.label === this.value; }, this)[0];
+    var val = this.value;
+
+    // Popula municípios
+    var entry = NTE_LIST.filter(function(n) { return n.label === val; })[0];
     var sel = document.getElementById('municipio');
     sel.innerHTML = '<option value="" disabled selected>Selecione o município</option>';
     if(entry) {
@@ -406,6 +411,38 @@
     }
     sel.value = '';
     document.getElementById('f-municipio').classList.remove('invalid');
+
+    // NTE 26: oculta deslocamento e hospedagem
+    var isNte26 = val === NTE26;
+    var ids = ['title-deslocamento','f-tipo-deslocamento','bloco-quilometragem','title-hospedagem','f-hospedagem'];
+    ids.forEach(function(id) {
+      document.getElementById(id).style.display = isNte26 ? 'none' : '';
+    });
+    if(isNte26) {
+      document.getElementById('tipoDeslocamento').value = '';
+      document.getElementById('quilometragem').value = '';
+      document.getElementById('valorTransporte').value = '';
+      document.getElementById('hospedagem').value = '';
+    }
+  });
+
+  // Funcao → mostra/oculta seção territorial
+  document.getElementById('funcao').addEventListener('change', function() {
+    var isTerritorial = this.value === 'Coordenador Territorial';
+    ['title-territorial','f-nte','f-municipio'].forEach(function(id) {
+      document.getElementById(id).style.display = isTerritorial ? '' : 'none';
+    });
+    if(!isTerritorial) {
+      document.getElementById('nte').value = '';
+      document.getElementById('municipio').innerHTML = '<option value="" disabled selected>Selecione o NTE primeiro</option>';
+      document.getElementById('municipio').disabled = true;
+      document.getElementById('f-nte').classList.remove('invalid');
+      document.getElementById('f-municipio').classList.remove('invalid');
+      // Restaura deslocamento e hospedagem ao trocar de função
+      ['title-deslocamento','f-tipo-deslocamento','bloco-quilometragem','title-hospedagem','f-hospedagem'].forEach(function(id) {
+        document.getElementById(id).style.display = '';
+      });
+    }
   });
 
   // Máscara CPF
@@ -486,7 +523,9 @@
     var tipoChavePix    = document.getElementById('tipoChavePix').value;
     var chavePix        = document.getElementById('chavePix').value.trim();
 
-    var precisaDesl = tipoDesl && tipoDesl !== 'Não precisa de deslocamento';
+    var isTerritorial = funcao === 'Coordenador Territorial';
+    var isNte26       = nte === NTE26;
+    var precisaDesl   = !isNte26 && tipoDesl && tipoDesl !== 'Não precisa de deslocamento';
     var ok = true;
 
     setInvalid('nome', !nome); if(!nome) ok=false;
@@ -496,18 +535,22 @@
     var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     setInvalid('email', !emailOk); if(!emailOk) ok=false;
     setInvalid('funcao', !funcao); if(!funcao) ok=false;
-    setInvalid('nte', !nte); if(!nte) ok=false;
-    setInvalid('municipio', !municipio); if(!municipio) ok=false;
-    setInvalid('tipo-deslocamento', !tipoDesl); if(!tipoDesl) ok=false;
 
-    if(precisaDesl) {
-      var kmOk = quilometragem && parseInt(quilometragem) >= 1;
-      setInvalid('quilometragem', !kmOk); if(!kmOk) ok=false;
-      var valorOk = valorTransporte && valorTransporte !== 'R$ 0,00';
-      setInvalid('valor-transporte', !valorOk); if(!valorOk) ok=false;
+    if(isTerritorial) {
+      setInvalid('nte', !nte); if(!nte) ok=false;
+      setInvalid('municipio', !municipio); if(!municipio) ok=false;
     }
 
-    setInvalid('hospedagem', !hospedagem); if(!hospedagem) ok=false;
+    if(!isNte26) {
+      setInvalid('tipo-deslocamento', !tipoDesl); if(!tipoDesl) ok=false;
+      if(precisaDesl) {
+        var kmOk = quilometragem && parseInt(quilometragem) >= 1;
+        setInvalid('quilometragem', !kmOk); if(!kmOk) ok=false;
+        var valorOk = valorTransporte && valorTransporte !== 'R$ 0,00';
+        setInvalid('valor-transporte', !valorOk); if(!valorOk) ok=false;
+      }
+      setInvalid('hospedagem', !hospedagem); if(!hospedagem) ok=false;
+    }
     setInvalid('banco', !banco); if(!banco) ok=false;
     setInvalid('tipo-conta', !tipoConta); if(!tipoConta) ok=false;
     setInvalid('agencia', !agencia); if(!agencia) ok=false;
@@ -529,11 +572,12 @@
       body: JSON.stringify({
         action: 'inscrever',
         nome: nome, cpf: cpf, contato: contato, email: email, funcao: funcao,
-        nte: nte, municipio: municipio,
-        tipoDeslocamento: tipoDesl,
+        nte: isTerritorial ? nte : '',
+        municipio: isTerritorial ? municipio : '',
+        tipoDeslocamento: isNte26 ? '' : tipoDesl,
         quilometragem: precisaDesl ? quilometragem : '',
         valorTransporte: precisaDesl ? valorTransporte : '',
-        hospedagem: hospedagem,
+        hospedagem: isNte26 ? '' : hospedagem,
         banco: banco, tipoConta: tipoConta, agencia: agencia, conta: conta,
         tipoChavePix: tipoChavePix, chavePix: chavePix
       })
