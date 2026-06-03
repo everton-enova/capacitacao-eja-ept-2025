@@ -25,22 +25,17 @@ function doPost(e) {
     var agora = new Date();
     sheet.appendRow([
       Utilities.formatDate(agora, Session.getScriptTimeZone(), 'dd/MM/yyyy HH:mm:ss'),
-      payload.nome            || '',
-      payload.cpf             || '',
-      payload.email           || '',
-      payload.contato         || '',
-      payload.funcao          || '',
-      payload.nte             || '',
-      payload.municipio       || '',
+      payload.nome             || '',
+      payload.cpf              || '',
+      payload.email            || '',
+      payload.contato          || '',
+      payload.funcao           || '',
+      payload.nte              || '',
+      payload.municipio        || '',
       payload.tipoDeslocamento || '',
-      payload.quilometragem   || '',
-      payload.valorTransporte || '',
-      payload.banco           || '',
-      payload.agencia         || '',
-      payload.conta           || '',
-      payload.tipoConta       || '',
-      payload.tipoChavePix    || '',
-      payload.chavePix        || ''
+      payload.quilometragem    || '',
+      payload.valorTransporte  || '',
+      payload.hospedagem       || ''
     ]);
 
     return jsonResponse({ success: true });
@@ -58,8 +53,7 @@ function getSheet() {
     var headers = [
       'Data/Hora', 'Nome', 'CPF', 'E-mail', 'Contato', 'Função',
       'NTE', 'Município', 'Tipo de Deslocamento', 'Quilometragem (km)',
-      'Valor de Transporte (R$)', 'Banco', 'Agência', 'Conta',
-      'Tipo de Conta', 'Tipo de Chave PIX', 'Chave PIX'
+      'Valor de Transporte (R$)', 'Hospedagem'
     ];
     sheet.appendRow(headers);
     sheet.getRange(1, 1, 1, headers.length)
@@ -67,7 +61,7 @@ function getSheet() {
       .setBackground('#1a3a8a')
       .setFontColor('#ffffff');
     sheet.setFrozenRows(1);
-    var widths = [150, 220, 120, 200, 130, 200, 80, 160, 190, 130, 150, 150, 90, 100, 120, 150, 200];
+    var widths = [150, 220, 120, 200, 130, 200, 80, 160, 190, 130, 150, 100];
     widths.forEach(function(w, i) { sheet.setColumnWidth(i + 1, w); });
   }
   return sheet;
