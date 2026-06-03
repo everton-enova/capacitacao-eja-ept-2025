@@ -43,9 +43,9 @@ function munAcentuado(raw: string) { return MUN_LOOKUP[raw.trim()] ?? raw }
 
 const NTE26 = 'NTE 26 - Metropolitano de Salvador'
 
-const inputCls = 'w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-gray-700 focus:ring-2 focus:ring-gray-200 disabled:opacity-60 disabled:cursor-not-allowed'
-const labelCls = 'block text-xs font-semibold text-gray-800 uppercase tracking-wide mb-1'
-const sectionCls = 'text-xs font-bold tracking-widest text-gray-800 uppercase pb-2 border-b-2 border-gray-200'
+const inputCls = 'w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-3 text-sm text-gray-950 focus:outline-none focus:border-gray-700 focus:ring-2 focus:ring-gray-200 disabled:opacity-60 disabled:cursor-not-allowed'
+const labelCls = 'block text-xs font-semibold text-gray-950 uppercase tracking-wide mb-1'
+const sectionCls = 'text-xs font-bold tracking-widest text-gray-950 uppercase pb-2 border-b-2 border-gray-300'
 
 export default function FormularioClient() {
   const [form, setForm] = useState({
@@ -207,30 +207,39 @@ export default function FormularioClient() {
   }
 
   return (
-    <main className="min-h-screen flex">
-      {/* Painel esquerdo */}
-      <div className="hidden lg:flex lg:w-80 xl:w-96 flex-shrink-0 relative flex-col items-center justify-center p-10"
-        style={{ backgroundImage: "url('/background.webp')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
+    <main className="min-h-screen">
+      {/* Painel esquerdo — fixo no desktop */}
+      <div
+        className="hidden lg:flex fixed top-0 left-0 h-screen w-80 xl:w-96 flex-col justify-between p-10 z-10"
+        style={{ backgroundImage: "url('/background.webp')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+      >
         <div className="absolute inset-0" style={{ background: 'rgba(28,28,28,0.92)' }} />
-        <div className="relative z-10 text-white text-left w-full">
-          <Image src="/brasao_estado.png" alt="Estado da Bahia" width={56} height={56} className="mb-6" />
-          <p className="text-xs font-normal text-white/70 mb-1">Capacitação para Equipe de Campo</p>
-          <h1 className="text-2xl font-bold leading-tight mb-1">Avaliação de Entrada</h1>
-          <h1 className="text-2xl font-bold leading-tight mb-6">EJA e EPT</h1>
-          <div className="border-t border-white/20 pt-6 space-y-4">
-            <div>
-              <p className="text-xs uppercase tracking-widest text-white/50 mb-1">Data</p>
-              <p className="text-sm font-light">04 de Julho de 2026</p>
-            </div>
+
+        <div className="relative z-10 text-white">
+          <Image src="/brasao_estado.png" alt="Estado da Bahia" width={84} height={84} className="mb-8" />
+          <p className="text-xs font-medium text-white/60 uppercase tracking-widest mb-3">
+            Capacitação para<br />Equipe de Campo
+          </p>
+          <h1 className="text-3xl font-bold leading-snug">
+            Avaliação<br />de Entrada<br />EJA e EPT
+          </h1>
+        </div>
+
+        <div className="relative z-10 text-white space-y-6">
+          <div className="border-t border-white/15 pt-6">
+            <p className="text-[10px] uppercase tracking-widest text-white/40 mb-1">Data</p>
+            <p className="text-sm font-light text-white/90">04 de Julho de 2026</p>
           </div>
-          <p className="mt-8 text-xs text-white/50 leading-relaxed">
-            Preencha o formulário com atenção redobrada a todos os campos. Ao enviar, seu cadastro é criado automaticamente e você poderá acessar o painel com seu CPF.
+          <p className="text-[11px] text-white/40 leading-relaxed">
+            Preencha o formulário com atenção.<br />
+            Ao enviar, seu acesso ao painel<br />
+            é criado automaticamente.
           </p>
         </div>
       </div>
 
-      {/* Painel direito */}
-      <div className="flex-1 bg-[#e8e8e8] overflow-y-auto">
+      {/* Painel direito — scroll independente */}
+      <div className="lg:ml-80 xl:ml-96 min-h-screen bg-[#e8e8e8]">
         {/* Header mobile */}
         <header className="lg:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center gap-3">
           <Image src="/brasao_estado.png" alt="Estado da Bahia" width={32} height={32} />
