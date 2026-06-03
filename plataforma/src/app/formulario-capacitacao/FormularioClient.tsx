@@ -249,7 +249,8 @@ export default function FormularioClient() {
         <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-4 text-xs text-amber-800 leading-relaxed mb-6">
           <strong className="block mb-1">Atenção — leia antes de preencher</strong>
           Preencha todos os campos com atenção redobrada, especialmente os dados pessoais, bancários e de deslocamento.
-          Informações incorretas poderão ocasionar atrasos no pagamento da ajuda de custo. <strong>Revise antes de enviar.</strong>
+          Informações incorretas poderão ocasionar atrasos no pagamento da ajuda de custo.
+          <strong className="block mt-2 text-sm text-red-600">Revise antes de enviar.</strong>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
