@@ -138,12 +138,23 @@ export default function GerenciarColaboradores() {
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    {c.ativo && (
-                      <button onClick={() => desativar(c._id)}
+                    <div className="flex items-center gap-3">
+                      {c.ativo ? (
+                        <button onClick={() => toggleAtivo(c._id, false)}
+                          className="text-xs text-amber-600 hover:text-amber-800 font-medium">
+                          Desativar
+                        </button>
+                      ) : (
+                        <button onClick={() => toggleAtivo(c._id, true)}
+                          className="text-xs text-green-600 hover:text-green-800 font-medium">
+                          Ativar
+                        </button>
+                      )}
+                      <button onClick={() => excluir(c._id, c.nome)}
                         className="text-xs text-red-600 hover:text-red-800 font-medium">
-                        Desativar
+                        Excluir
                       </button>
-                    )}
+                    </div>
                   </td>
                 </tr>
               ))}
