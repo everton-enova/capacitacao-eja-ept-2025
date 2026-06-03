@@ -47,7 +47,7 @@ const inputCls = 'w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-3
 const labelCls = 'block text-xs font-semibold text-gray-950 uppercase tracking-wide mb-1'
 const sectionCls = 'text-xs font-bold tracking-widest text-gray-950 uppercase pb-2 border-b-2 border-gray-300'
 
-function Field({ label, erro, children }: { label: string; erro?: string; children: React.ReactNode }) {
+function Field({ label, erro, children }: { id?: string; label: string; erro?: string; children: React.ReactNode }) {
   return (
     <div>
       <label className={labelCls}>{label}</label>
