@@ -42,6 +42,7 @@ TODOS_MUNICIPIOS.forEach(m => { MUN_LOOKUP[normMun(m)] = m })
 function munAcentuado(raw: string) { return MUN_LOOKUP[raw.trim()] ?? raw }
 
 const NTE26 = 'NTE 26 - Metropolitano de Salvador'
+const SUBS_COM_DESLOCAMENTO = ['028.586.361-41', '040.480.505-16']
 
 const inputCls = 'w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-3 text-sm text-gray-950 focus:outline-none focus:border-gray-700 focus:ring-2 focus:ring-gray-200 disabled:opacity-60 disabled:cursor-not-allowed'
 const labelCls = 'block text-xs font-semibold text-gray-950 uppercase tracking-wide mb-1'
@@ -76,7 +77,10 @@ export default function FormularioClient() {
 
   const isTerritorial = form.funcao === 'Coordenador Territorial'
   const isNte26 = form.nte === NTE26
-  const precisaDesl = !isNte26 && form.tipoDeslocamento && form.tipoDeslocamento !== 'Não precisa de deslocamento'
+  const mostraDeslocamento =
+    (isTerritorial && !isNte26) ||
+    (form.funcao === 'Subcoordenador Estadual' && SUBS_COM_DESLOCAMENTO.includes(form.cpf))
+  const precisaDesl = mostraDeslocamento && form.tipoDeslocamento && form.tipoDeslocamento !== 'Não precisa de deslocamento'
 
   useEffect(() => {}, [])
 
@@ -145,7 +149,7 @@ export default function FormularioClient() {
       if (!form.nte) e.nte = 'Selecione o NTE.'
       if (!form.municipio) e.municipio = 'Selecione o município.'
     }
-    if (!isNte26) {
+    if (mostraDeslocamento) {
       if (!form.tipoDeslocamento) e.tipoDeslocamento = 'Selecione o tipo de deslocamento.'
       if (precisaDesl) {
         if (!form.quilometragem || parseInt(form.quilometragem) < 1) e.quilometragem = 'Informe a quilometragem.'
@@ -171,10 +175,10 @@ export default function FormularioClient() {
       ...form,
       nte: isTerritorial ? form.nte : '',
       municipio: isTerritorial ? form.municipio : '',
-      tipoDeslocamento: isNte26 ? '' : form.tipoDeslocamento,
+      tipoDeslocamento: mostraDeslocamento ? form.tipoDeslocamento : '',
       quilometragem: precisaDesl ? form.quilometragem : '',
       valorTransporte: precisaDesl ? form.valorTransporte : '',
-      hospedagem: isNte26 ? '' : form.hospedagem,
+      hospedagem: mostraDeslocamento ? form.hospedagem : '',
       tipoChavePix: 'CPF',
       chavePix: form.cpf,
     }
@@ -303,8 +307,8 @@ export default function FormularioClient() {
             </div>
           )}
 
-          {/* DESLOCAMENTO — oculto para NTE 26 */}
-          {!isNte26 && (
+          {/* DESLOCAMENTO */}
+          {mostraDeslocamento && (
             <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
               <p className={sectionCls}>Deslocamento</p>
               <Field id="tipoDeslocamento" label="Tipo de deslocamento *" erro={erros.tipoDeslocamento}>
@@ -330,8 +334,8 @@ export default function FormularioClient() {
             </div>
           )}
 
-          {/* HOSPEDAGEM — oculto para NTE 26 */}
-          {!isNte26 && (
+          {/* HOSPEDAGEM */}
+          {mostraDeslocamento && (
             <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
               <p className={sectionCls}>Hospedagem</p>
               <Field id="hospedagem" label="Precisa de hospedagem? *" erro={erros.hospedagem}>
