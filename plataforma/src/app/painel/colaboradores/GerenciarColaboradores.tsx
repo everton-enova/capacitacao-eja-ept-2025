@@ -47,7 +47,17 @@ export default function GerenciarColaboradores() {
     else { const d = await res.json(); setMsg(d.error ?? 'Erro ao adicionar.') }
   }
 
-  async function desativar(id: string) {
+  async function toggleAtivo(id: string, ativo: boolean) {
+    await fetch('/api/colaboradores', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, ativo }),
+    })
+    carregar()
+  }
+
+  async function excluir(id: string, nome: string) {
+    if (!confirm(`Excluir permanentemente "${nome}"? Esta ação não pode ser desfeita.`)) return
     await fetch('/api/colaboradores', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
