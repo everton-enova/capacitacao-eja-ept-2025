@@ -94,7 +94,7 @@ export default function Sidebar({ session }: Props) {
       {/* Desktop sidebar — fixo */}
       <aside className="hidden lg:flex fixed top-0 left-0 h-screen w-64 bg-gray-900 flex-col p-5 z-20">
         <div className="flex items-center gap-3 mb-8">
-          <Image src="/brasao_estado.png" alt="Estado da Bahia" width={36} height={36} />
+          <Image src="/favicon-branco.png" alt="Estado da Bahia" width={48} height={48} className="rounded" />
           <div>
             <p className="text-white text-sm font-bold leading-tight">SABE 2025</p>
             <p className="text-white/40 text-xs">Equipe de Campo</p>
