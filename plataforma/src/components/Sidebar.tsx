@@ -64,7 +64,7 @@ export default function Sidebar({ session }: Props) {
       {/* Mobile header */}
       <header className="lg:hidden fixed top-0 left-0 right-0 z-30 bg-gray-900 px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Image src="/brasao_estado.png" alt="" width={28} height={28} />
+          <Image src="/favicon-branco.png" alt="" width={28} height={28} className="rounded" />
           <span className="text-white text-sm font-semibold">SABE 2025</span>
         </div>
         <button onClick={() => setOpen(o => !o)} className="text-white/70 hover:text-white p-1">
