@@ -216,7 +216,7 @@ export default function FormularioClient() {
         <div className="absolute inset-0" style={{ background: 'rgba(28,28,28,0.92)' }} />
 
         <div className="relative z-10 text-white">
-          <Image src="/brasao_estado.png" alt="Estado da Bahia" width={84} height={84} className="mb-8" />
+          <Image src="/brasao_estado.png" alt="Estado da Bahia" width={140} height={140} className="mb-8" />
           <p className="text-xs font-medium text-white/60 uppercase tracking-widest mb-3">
             Capacitação para<br />Equipe de Campo
           </p>
