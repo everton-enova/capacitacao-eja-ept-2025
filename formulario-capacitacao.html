@@ -278,6 +278,58 @@
           <span class="field-error">Selecione uma opção.</span>
         </div>
 
+        <!-- ── DADOS BANCÁRIOS ───────────────────────── -->
+        <div class="section-title">Dados Bancários</div>
+
+        <div class="row">
+          <div class="field" id="f-banco">
+            <label for="banco">Banco <span>*</span></label>
+            <input type="text" id="banco" placeholder="Ex: Banco do Brasil"/>
+            <span class="field-error">Informe o banco.</span>
+          </div>
+          <div class="field" id="f-tipo-conta">
+            <label for="tipoConta">Tipo de conta <span>*</span></label>
+            <select id="tipoConta">
+              <option value="" disabled selected>Selecione</option>
+              <option value="Corrente">Conta Corrente</option>
+              <option value="Poupança">Conta Poupança</option>
+            </select>
+            <span class="field-error">Selecione o tipo de conta.</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field" id="f-agencia">
+            <label for="agencia">Agência <span>*</span></label>
+            <input type="text" id="agencia" placeholder="0000"/>
+            <span class="field-error">Informe a agência.</span>
+          </div>
+          <div class="field" id="f-conta">
+            <label for="conta">Conta <span>*</span></label>
+            <input type="text" id="conta" placeholder="00000-0"/>
+            <span class="field-error">Informe o número da conta.</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field" id="f-tipo-chave-pix">
+            <label for="tipoChavePix">Tipo de chave PIX <span>*</span></label>
+            <select id="tipoChavePix">
+              <option value="" disabled selected>Selecione</option>
+              <option value="CPF">CPF</option>
+              <option value="Telefone">Telefone</option>
+              <option value="E-mail">E-mail</option>
+              <option value="Chave aleatória">Chave aleatória</option>
+            </select>
+            <span class="field-error">Selecione o tipo de chave PIX.</span>
+          </div>
+          <div class="field" id="f-chave-pix">
+            <label for="chavePix">Chave PIX <span>*</span></label>
+            <input type="text" id="chavePix" placeholder="Informe a chave"/>
+            <span class="field-error">Informe a chave PIX.</span>
+          </div>
+        </div>
+
         <button type="submit" class="btn" id="btn-submit">
           <span class="btn-text">Enviar Inscrição</span>
           <div class="spinner"></div>
@@ -386,6 +438,12 @@
     var quilometragem   = document.getElementById('quilometragem').value.trim();
     var valorTransporte = document.getElementById('valorTransporte').value.trim();
     var hospedagem      = document.getElementById('hospedagem').value;
+    var banco           = document.getElementById('banco').value.trim();
+    var tipoConta       = document.getElementById('tipoConta').value;
+    var agencia         = document.getElementById('agencia').value.trim();
+    var conta           = document.getElementById('conta').value.trim();
+    var tipoChavePix    = document.getElementById('tipoChavePix').value;
+    var chavePix        = document.getElementById('chavePix').value.trim();
 
     var isTerritorial = funcao === 'Coordenador Territorial';
     var precisaDesl   = tipoDesl && tipoDesl !== 'Não precisa de deslocamento';
@@ -415,6 +473,12 @@
     }
 
     setInvalid('hospedagem', !hospedagem); if(!hospedagem) ok=false;
+    setInvalid('banco', !banco); if(!banco) ok=false;
+    setInvalid('tipo-conta', !tipoConta); if(!tipoConta) ok=false;
+    setInvalid('agencia', !agencia); if(!agencia) ok=false;
+    setInvalid('conta', !conta); if(!conta) ok=false;
+    setInvalid('tipo-chave-pix', !tipoChavePix); if(!tipoChavePix) ok=false;
+    setInvalid('chave-pix', !chavePix); if(!chavePix) ok=false;
 
     if(!ok) {
       toast.textContent = 'Preencha todos os campos obrigatórios corretamente.';
@@ -435,7 +499,9 @@
         tipoDeslocamento: tipoDesl,
         quilometragem: precisaDesl ? quilometragem : '',
         valorTransporte: precisaDesl ? valorTransporte : '',
-        hospedagem: hospedagem
+        hospedagem: hospedagem,
+        banco: banco, tipoConta: tipoConta, agencia: agencia, conta: conta,
+        tipoChavePix: tipoChavePix, chavePix: chavePix
       })
     })
     .then(function(r) { return r.json(); })

@@ -1,4 +1,28 @@
-var SHEET_NAME = 'Inscricoes';
+var SHEET_NAME = 'CAPACITAÇÃO';
+
+var CABECALHOS = [
+  'Data/Hora', 'Nome', 'CPF', 'E-mail', 'Contato', 'Função',
+  'NTE', 'Município', 'Tipo de Deslocamento', 'Quilometragem (km)',
+  'Valor de Transporte (R$)', 'Hospedagem',
+  'Banco', 'Agência', 'Conta', 'Tipo de Conta', 'Tipo de Chave PIX', 'Chave PIX'
+];
+
+// ── Rode esta função UMA VEZ pelo editor do Apps Script para criar os cabeçalhos ──
+function configurarCabecalhos() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(SHEET_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(SHEET_NAME);
+  }
+  sheet.getRange(1, 1, 1, CABECALHOS.length).setValues([CABECALHOS])
+    .setFontWeight('bold')
+    .setBackground('#1a3a8a')
+    .setFontColor('#ffffff');
+  sheet.setFrozenRows(1);
+  var widths = [150, 220, 120, 200, 130, 200, 80, 160, 190, 130, 150, 100, 150, 90, 100, 120, 150, 200];
+  widths.forEach(function(w, i) { sheet.setColumnWidth(i + 1, w); });
+  SpreadsheetApp.getUi().alert('Cabeçalhos configurados com sucesso!');
+}
 
 function doGet(e) {
   return jsonResponse({ status: 'API funcionando' });
@@ -35,7 +59,13 @@ function doPost(e) {
       payload.tipoDeslocamento || '',
       payload.quilometragem    || '',
       payload.valorTransporte  || '',
-      payload.hospedagem       || ''
+      payload.hospedagem       || '',
+      payload.banco            || '',
+      payload.agencia          || '',
+      payload.conta            || '',
+      payload.tipoConta        || '',
+      payload.tipoChavePix     || '',
+      payload.chavePix         || ''
     ]);
 
     return jsonResponse({ success: true });
@@ -50,19 +80,11 @@ function getSheet() {
   var sheet = ss.getSheetByName(SHEET_NAME);
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_NAME);
-    var headers = [
-      'Data/Hora', 'Nome', 'CPF', 'E-mail', 'Contato', 'Função',
-      'NTE', 'Município', 'Tipo de Deslocamento', 'Quilometragem (km)',
-      'Valor de Transporte (R$)', 'Hospedagem'
-    ];
-    sheet.appendRow(headers);
-    sheet.getRange(1, 1, 1, headers.length)
+    sheet.getRange(1, 1, 1, CABECALHOS.length).setValues([CABECALHOS])
       .setFontWeight('bold')
       .setBackground('#1a3a8a')
       .setFontColor('#ffffff');
     sheet.setFrozenRows(1);
-    var widths = [150, 220, 120, 200, 130, 200, 80, 160, 190, 130, 150, 100];
-    widths.forEach(function(w, i) { sheet.setColumnWidth(i + 1, w); });
   }
   return sheet;
 }
